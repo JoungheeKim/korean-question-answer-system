@@ -167,9 +167,10 @@ class Korquad2_Converter(object):
                 modified_start = int(min(possible_ids))
                 modified_end = int(max(possible_ids)) + 1
                 modified_text = paragraph[modified_start:modified_end].rstrip()
-                modified_answer = {'text': modified_text, 'answer_start': int(modified_start)}
-                modified_qa['answers'].append(modified_answer)
-                modified_qa['is_impossible'] = False
+                if modified_text is not None and len(modified_text) > 0 and not modified_text == '':
+                    modified_answer = {'text': modified_text, 'answer_start': int(modified_start)}
+                    modified_qa['answers'].append(modified_answer)
+                    modified_qa['is_impossible'] = False
             modified_qas.append(modified_qa)
 
         if len(modified_qas)>0:
