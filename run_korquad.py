@@ -470,9 +470,26 @@ def load_and_cache_examples(args, tokenizer, evaluate=False, output_examples=Fal
     from korquad import KorquadV2Processor, korquad_convert_examples_to_features
     processor = KorquadV2Processor()
     if evaluate:
-        examples = processor.get_dev_examples(args.data_dir, filename=args.predict_file)
+        examples = []
+        ## Find json file name
+        predict_files = [temp_file for temp_file in os.listdir(args.predict_dir) if '.json' in temp_file]
+
+        ## Load json files
+        for predict_file in predict_files:
+            temp_examples = processor.get_dev_examples(args.predict_dir, filename=predict_file)
+            if temp_examples is not None and len(temp_examples)>0:
+                examples.extend(temp_examples)
+
     else:
-        examples = processor.get_train_examples(args.data_dir, filename=args.train_file)
+        examples = []
+        ## Find json file name
+        train_files = [temp_file for temp_file in os.listdir(args.train_dir) if '.json' in temp_file]
+
+        ## Load json files
+        for train_file in train_files:
+            temp_examples = processor.get_dev_examples(args.train_dir, filename=train_file)
+            if temp_examples is not None and len(temp_examples) > 0:
+                examples.extend(temp_examples)
 
     features, dataset = korquad_convert_examples_to_features(
         examples=examples,
@@ -524,29 +541,22 @@ def main():
         help="The output directory where the model checkpoints and predictions will be written.",
     )
 
-    # Other parameters
+
     parser.add_argument(
-        "--data_dir",
-        default=None,
-        type=str,
-        help="The input data dir. Should contain the .json files for the task."
-        + "If no data dir or train/predict files are specified, will run with tensorflow_datasets.",
-    )
-    parser.add_argument(
-        "--train_file",
-        default='resource/korquad2_sample.json',
+        "--train_dir",
+        default='resource/train/',
         #default=None,
         type=str,
-        help="The input training file. If a data dir is specified, will look for the file there"
-        + "If no data dir or train/predict files are specified, will run with tensorflow_datasets.",
+        help="The input training dir. Should contain the .json files for the task."
+        ,
     )
     parser.add_argument(
-        "--predict_file",
-        default='resource/korquad2_sample.json',
+        "--predict_dir",
+        default='resource/dev/',
         #default=None,
         type=str,
-        help="The input evaluation file. If a data dir is specified, will look for the file there"
-        + "If no data dir or train/predict files are specified, will run with tensorflow_datasets.",
+        help="The input evaluation dir. Should contain the .json files for the task."
+        ,
     )
     parser.add_argument(
         "--config_name", default="", type=str, help="Pretrained config name or path if not the same as model_name"
