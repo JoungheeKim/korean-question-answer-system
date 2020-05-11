@@ -341,69 +341,97 @@ class KorquadFeatures(SquadFeatures):
 
 from transformers.data.processors.squad import SquadProcessor
 from convert import Korquad2_Converter
+
+def convert_to_korquad_example_init(converter_for_convert):
+    global converter
+    converter = converter_for_convert
+
+def convert_to_korquad_example(entry, is_training):
+    title = entry["title"]
+    html = entry["context"]
+    qas = entry["qas"]
+
+    modified_paragraphs = converter.convert_to_squad_format(html, qas)
+    temp_examples = {}
+    for modified_paragraph in modified_paragraphs:
+        context_text = modified_paragraph["context"]
+
+        for qa in modified_paragraph["qas"]:
+            qas_id = qa["id"]
+            question_text = qa["question"]
+            start_position_character = None
+            answer_text = None
+            answers = []
+
+            if "is_impossible" in qa:
+                is_impossible = qa["is_impossible"]
+            else:
+                is_impossible = False
+
+            if not is_impossible:
+                if is_training:
+                    answer = qa["answers"][0]
+                    answer_text = answer["text"]
+                    start_position_character = answer["answer_start"]
+                else:
+                    answers = qa["answers"]
+
+            if qas_id not in temp_examples:
+                temp_examples[qas_id] = korquadExample(
+                    qas_id=qas_id,
+                    question_text=question_text,
+                    answer_text=answer_text,
+                    title=title,
+                    is_impossible=is_impossible,
+                )
+
+            example = SquadExample(
+                qas_id=qas_id,
+                question_text=question_text,
+                context_text=context_text,
+                answer_text=answer_text,
+                start_position_character=start_position_character,
+                title=title,
+                is_impossible=is_impossible,
+                answers=answers,
+            )
+            temp_examples[qas_id].add_SquadExample(example)
+    return [example for qas_id, example in temp_examples.items()]
+
 class KorquadV2Processor(SquadProcessor):
-    def __init__(self):
+    def __init__(self, threads=1):
         self.converter = Korquad2_Converter()
         super().__init__()
+        self.threads = threads
 
     train_file = "train-v2.0.json"
     dev_file = "dev-v2.0.json"
 
     def _create_examples(self, input_data, set_type):
         is_training = set_type == "train"
-        examples = []
-        for entry in tqdm(input_data):
-            title = entry["title"]
-            html = entry["context"]
-            qas = entry["qas"]
 
-            modified_paragraphs = self.converter.convert_to_squad_format(html, qas)
-            temp_examples = {}
-            for modified_paragraph in modified_paragraphs:
-                context_text = modified_paragraph["context"]
+        threads = min(self.threads, cpu_count())
 
-                for qa in modified_paragraph["qas"]:
-                    qas_id = qa["id"]
-                    question_text = qa["question"]
-                    start_position_character = None
-                    answer_text = None
-                    answers = []
+        with Pool(threads, initializer=convert_to_korquad_example_init, initargs=(self.converter,)) as p:
+            annotate_ = partial(
+                convert_to_korquad_example,
+                is_training=is_training,
+            )
+            examples = list(
+                tqdm(
+                    p.imap(annotate_, input_data, chunksize=32),
+                    total=len(input_data),
+                    desc="convert file into korquad format",
+                )
+            )
+        new_examples = []
+        for example_list in examples:
+            if not example_list or not type(example_list)==list or len(example_list)<1:
+                continue
+            new_examples.extend(example_list)
+        examples = new_examples
+        del new_examples
 
-                    if "is_impossible" in qa:
-                        is_impossible = qa["is_impossible"]
-                    else:
-                        is_impossible = False
-
-                    if not is_impossible:
-                        if is_training:
-                            answer = qa["answers"][0]
-                            answer_text = answer["text"]
-                            start_position_character = answer["answer_start"]
-                        else:
-                            answers = qa["answers"]
-
-                    if qas_id not in temp_examples:
-                        temp_examples[qas_id] = korquadExample(
-                            qas_id=qas_id,
-                            question_text=question_text,
-                            answer_text=answer_text,
-                            title=title,
-                            is_impossible=is_impossible,
-                        )
-
-                    example = SquadExample(
-                        qas_id=qas_id,
-                        question_text=question_text,
-                        context_text=context_text,
-                        answer_text=answer_text,
-                        start_position_character=start_position_character,
-                        title=title,
-                        is_impossible=is_impossible,
-                        answers=answers,
-                    )
-                    temp_examples[qas_id].add_SquadExample(example)
-
-            examples.extend([example for qas_id, example in temp_examples.items()])
         return examples
 
 class korquadExample():

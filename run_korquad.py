@@ -468,7 +468,7 @@ def load_and_cache_examples(args, tokenizer, evaluate=False, output_examples=Fal
     """
 
     from korquad import KorquadV2Processor, korquad_convert_examples_to_features
-    processor = KorquadV2Processor()
+    processor = KorquadV2Processor(args.threads)
     if evaluate:
         examples = []
         ## Find json file name
