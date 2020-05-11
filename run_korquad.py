@@ -487,7 +487,7 @@ def load_and_cache_examples(args, tokenizer, evaluate=False, output_examples=Fal
 
         ## Load json files
         for train_file in train_files:
-            temp_examples = processor.get_dev_examples(args.train_dir, filename=train_file)
+            temp_examples = processor.get_train_examples(args.train_dir, filename=train_file)
             if temp_examples is not None and len(temp_examples) > 0:
                 examples.extend(temp_examples)
 
@@ -526,10 +526,10 @@ def main():
     )
     parser.add_argument(
         "--model_name_or_path",
-        default='bert-base-multilingual-cased',
-        #default=None,
+        #default='bert-base-multilingual-cased',
+        default=None,
         type=str,
-        #required=True,
+        required=True,
         help="Path to pre-trained model or shortcut name selected in the list: " + ", ".join(ALL_MODELS),
     )
     parser.add_argument(
@@ -589,14 +589,14 @@ def main():
 
     parser.add_argument(
         "--max_seq_length",
-        default=384,
+        default=512,
         type=int,
         help="The maximum total input sequence length after WordPiece tokenization. Sequences "
         "longer than this will be truncated, and sequences shorter than this will be padded.",
     )
     parser.add_argument(
         "--doc_stride",
-        default=128,
+        default=256,
         type=int,
         help="When splitting up a long document into chunks, how much stride to take between chunks.",
     )
@@ -608,7 +608,7 @@ def main():
         "be truncated to this length.",
     )
     parser.add_argument("--do_train", action="store_true", help="Whether to run training.", default=True)
-    parser.add_argument("--do_eval", action="store_true", help="Whether to run eval on the dev set." ,default=True)
+    parser.add_argument("--do_eval", action="store_true", help="Whether to run eval on the dev set.")
     parser.add_argument(
         "--evaluate_during_training", action="store_true", help="Run evaluation during training at each logging step."
     )
@@ -616,22 +616,22 @@ def main():
         "--do_lower_case", action="store_true", help="Set this flag if you are using an uncased model."
     )
 
-    parser.add_argument("--per_gpu_train_batch_size", default=2, type=int, help="Batch size per GPU/CPU for training.")
+    parser.add_argument("--per_gpu_train_batch_size", default=8, type=int, help="Batch size per GPU/CPU for training.")
     parser.add_argument(
-        "--per_gpu_eval_batch_size", default=2, type=int, help="Batch size per GPU/CPU for evaluation."
+        "--per_gpu_eval_batch_size", default=64, type=int, help="Batch size per GPU/CPU for evaluation."
     )
     parser.add_argument("--learning_rate", default=3e-5, type=float, help="The initial learning rate for Adam.")
     parser.add_argument(
         "--gradient_accumulation_steps",
         type=int,
-        default=1,
+        default=4,
         help="Number of updates steps to accumulate before performing a backward/update pass.",
     )
     parser.add_argument("--weight_decay", default=0.0, type=float, help="Weight decay if we apply some.")
     parser.add_argument("--adam_epsilon", default=1e-8, type=float, help="Epsilon for Adam optimizer.")
     parser.add_argument("--max_grad_norm", default=1.0, type=float, help="Max gradient norm.")
     parser.add_argument(
-        "--num_train_epochs", default=3.0, type=float, help="Total number of training epochs to perform."
+        "--num_train_epochs", default=1.0, type=float, help="Total number of training epochs to perform."
     )
     parser.add_argument(
         "--max_steps",
@@ -648,7 +648,7 @@ def main():
     )
     parser.add_argument(
         "--max_answer_length",
-        default=30,
+        default=300,
         type=int,
         help="The maximum length of an answer that can be generated. This is needed because the start "
         "and end predictions are not conditioned on one another.",
@@ -698,7 +698,7 @@ def main():
     parser.add_argument("--server_ip", type=str, default="", help="Can be used for distant debugging.")
     parser.add_argument("--server_port", type=str, default="", help="Can be used for distant debugging.")
 
-    parser.add_argument("--threads", type=int, default=1, help="multiple threads for converting example to features")
+    parser.add_argument("--threads", type=int, default=6, help="multiple threads for converting example to features")
     args = parser.parse_args()
 
     if args.doc_stride >= args.max_seq_length - args.max_query_length:
