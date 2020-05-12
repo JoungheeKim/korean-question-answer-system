@@ -468,7 +468,7 @@ def load_and_cache_examples(args, tokenizer, evaluate=False, output_examples=Fal
     """
 
     from korquad import KorquadV2Processor, korquad_convert_examples_to_features
-    processor = KorquadV2Processor(args.threads)
+    processor = KorquadV2Processor(args.threads, args.max_paragraph_length)
     if evaluate:
         examples = []
         ## Find json file name
@@ -607,7 +607,16 @@ def main():
         help="The maximum number of tokens for the question. Questions longer than this will "
         "be truncated to this length.",
     )
-    parser.add_argument("--do_train", action="store_true", help="Whether to run training.", default=True)
+
+    parser.add_argument(
+        "--max_paragraph_length",
+        default=1,
+        type=int,
+        help="The maximum number of tokens for the paragraph. But it would not truncate paragraph."
+             "when merging paragrah i prevent to make paragraphs which is more than one to exceed max length",
+    )
+
+    parser.add_argument("--do_train", action="store_true", help="Whether to run training.")
     parser.add_argument("--do_eval", action="store_true", help="Whether to run eval on the dev set.")
     parser.add_argument(
         "--evaluate_during_training", action="store_true", help="Run evaluation during training at each logging step."
@@ -648,7 +657,7 @@ def main():
     )
     parser.add_argument(
         "--max_answer_length",
-        default=300,
+        default=400,
         type=int,
         help="The maximum length of an answer that can be generated. This is needed because the start "
         "and end predictions are not conditioned on one another.",

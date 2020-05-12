@@ -399,8 +399,9 @@ def convert_to_korquad_example(entry, is_training):
     return [example for qas_id, example in temp_examples.items()]
 
 class KorquadV2Processor(SquadProcessor):
-    def __init__(self, threads=1):
-        self.converter = Korquad2_Converter()
+    def __init__(self, threads=1, max_paragraph_length=428):
+        self.converter = Korquad2_Converter(
+            max_paragraph_length=max_paragraph_length)
         super().__init__()
         self.threads = threads
 

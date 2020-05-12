@@ -18,8 +18,8 @@ def build_parser():
     parser.add_argument("--merge_name", dest="merge_name", default='dev_sample_v2.json', type=str, help='병합파일의 이름')
 
     ## CONVERT OPTION
-    parser.add_argument("--max_len", dest="max_len", default=768, type=int, help='단락의 길이')  ## 사용안함 .....
-    parser.add_argument("--ans_len", dest="ans_len", default=128, type=int, help='질문의 길이')  ## 사용안함 .....
+    parser.add_argument("--max_paragraph_length", dest="max_paragraph_length", default=768, type=int, help='단락의 길이')  ## 사용안함 .....
+    parser.add_argument("--max_answer_length", dest="max_answer_length", default=128, type=int, help='질문의 길이')  ## 사용안함 .....
     parser.add_argument("--original_qas_include", action="store_true",
                         help='질문에 대한 Original 대답을 포함할 것인지 여부 (TRUE/FALSE)')
     parser.add_argument("--save_each", dest="save_each", action="store_true", default=False,
@@ -42,8 +42,8 @@ def convert_file_into_squad(config):
     print("INITALIZE Converter")
     ## INIT Converter
     converter = Korquad2_Converter(
-        max_len=config.max_len,
-        ans_len=config.ans_len
+        max_paragraph_length=config.max_paragraph_length,
+        max_answer_length=config.max_answer_length
         )
 
     print("INITALIZE Converter Done..")
@@ -109,7 +109,7 @@ def save_json(path, data):
 
 
 class Korquad2_Converter(object):
-    def __init__(self, max_len=768, ans_len=128):
+    def __init__(self, max_paragraph_length=768, max_answer_length=128):
         self.parser = {
             'table': [' ', ' '],
             'ul': ['', ']'],
@@ -125,13 +125,13 @@ class Korquad2_Converter(object):
         }
         self.sep_token = ' | '
 
-        self.max_len = max_len
-        self.ans_len = ans_len
+        self.max_paragraph_length = max_paragraph_length
+        self.max_answer_length = max_answer_length
 
     def convert_to_squad_format(self, html, qas):
         structure_contexts = get_wiki_context(html)
         context_list, context_pos_list = self.merge_structure_contexts(structure_contexts)
-        paragraphs, paragraph_ids = self.merge_contexts_by_len(context_list, context_pos_list, self.max_len)
+        paragraphs, paragraph_ids = self.merge_contexts_by_len(context_list, context_pos_list, self.max_paragraph_length)
         assert len(paragraphs) == len(paragraph_ids), "박살났음.. 포기.."
         # print(len(paragraphs), len(paragraph_ids))
 
@@ -257,7 +257,7 @@ class Korquad2_Converter(object):
 
             return context, context_pos, tag_name
 
-    def merge_contexts_by_len(self, contexts, context_ids, max_len=462):
+    def merge_contexts_by_len(self, contexts, context_ids, max_paragraph_length=462):
         assert len(contexts) == len(context_ids), "박살났음...."
         sep_token = '[SEP]'
         sep_idx = -1
@@ -271,7 +271,7 @@ class Korquad2_Converter(object):
                 stack_context = context
                 stack_context_id = context_id
             else:
-                if len(stack_context_id) + len(context_id) < max_len:
+                if len(stack_context_id) + len(context_id) < max_paragraph_length:
                     stack_context = sep_token.join([stack_context, context])
                     stack_context_id = join_list([stack_context_id, context_id], sep_token)
                 else:
