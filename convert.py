@@ -111,9 +111,9 @@ def save_json(path, data):
 class Korquad2_Converter(object):
     def __init__(self, max_paragraph_length=768, max_answer_length=128):
         self.parser = {
-            'table': [' ', ' '],
-            'ul': ['', ']'],
-            'dl': ['[', ']'],
+            'table': ['  ', '  '],
+            'ul': ['  ', '  '],
+            'dl': ['  ', '  '],
             'tr': ['|', '|']
         }
 
@@ -180,6 +180,7 @@ class Korquad2_Converter(object):
 
 
     def merge_structure_contexts(self, structure_contexts):
+        ## h2, h3로 문단이 나누므로 = 토큰을 사용하여 분리한다.
         h_token = " = "
         h_idx = -1
 
