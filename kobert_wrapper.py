@@ -1,6 +1,6 @@
 # coding=utf-8
 # Kobert is made by SK T-Brain Authors.
-# So you may need to contact kobert official gitHub if kobert is needed,
+# So you may need to contact kobert official gitHub if you need it,
 # https://github.com/SKTBrain/KoBERT
 
 from transformers import (
