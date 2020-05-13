@@ -37,6 +37,7 @@ from transformers import (
     AutoModelForQuestionAnswering,
     AutoTokenizer,
     get_linear_schedule_with_warmup,
+    squad_convert_examples_to_features,
 )
 from korquad_metrics import (
     compute_predictions_log_probs,
@@ -44,7 +45,7 @@ from korquad_metrics import (
     squad_evaluate,
 )
 from transformers.data.processors.squad import SquadResult, SquadV1Processor, SquadV2Processor
-
+from korquad import KorquadV2Processor, korquad_convert_examples_to_features
 
 try:
     from torch.utils.tensorboard import SummaryWriter
@@ -467,8 +468,10 @@ def load_and_cache_examples(args, tokenizer, evaluate=False, output_examples=Fal
             torch.save({"features": features, "dataset": dataset, "examples": examples}, cached_features_file)
     """
 
-    from korquad import KorquadV2Processor, korquad_convert_examples_to_features
-    processor = KorquadV2Processor(args.threads, args.max_paragraph_length)
+    if args.dataset_type in ['korquad2']:
+        processor = KorquadV2Processor(args.threads, args.max_paragraph_length)
+    else:
+        processor = SquadV2Processor() if args.version_2_with_negative else SquadV1Processor()
     if evaluate:
         examples = []
         ## Find json file name
@@ -490,18 +493,28 @@ def load_and_cache_examples(args, tokenizer, evaluate=False, output_examples=Fal
             temp_examples = processor.get_train_examples(args.train_dir, filename=train_file)
             if temp_examples is not None and len(temp_examples) > 0:
                 examples.extend(temp_examples)
-
-    features, dataset = korquad_convert_examples_to_features(
-        examples=examples,
-        tokenizer=tokenizer,
-        max_seq_length=args.max_seq_length,
-        doc_stride=args.doc_stride,
-        max_query_length=args.max_query_length,
-        is_training=not evaluate,
-        return_dataset="pt",
-        threads=args.threads,
-    )
-
+    if args.dataset_type in ['korquad2']:
+        features, dataset = korquad_convert_examples_to_features(
+            examples=examples,
+            tokenizer=tokenizer,
+            max_seq_length=args.max_seq_length,
+            doc_stride=args.doc_stride,
+            max_query_length=args.max_query_length,
+            is_training=not evaluate,
+            return_dataset="pt",
+            threads=args.threads,
+        )
+    else:
+        features, dataset = squad_convert_examples_to_features(
+            examples=examples,
+            tokenizer=tokenizer,
+            max_seq_length=args.max_seq_length,
+            doc_stride=args.doc_stride,
+            max_query_length=args.max_query_length,
+            is_training=not evaluate,
+            return_dataset="pt",
+            threads=args.threads,
+        )
 
     if args.local_rank == 0 and not evaluate:
         # Make sure only the first process in distributed training process the dataset, and the others will use the cache
@@ -510,6 +523,36 @@ def load_and_cache_examples(args, tokenizer, evaluate=False, output_examples=Fal
     if output_examples:
         return dataset, examples, features
     return dataset
+
+
+def load_model(args):
+    args.model_type = args.model_type.lower()
+    assert args.model_type in ['bert', 'kobert'], '{} is not support in this script. Try another model'.format(args.model_type)
+    if args.model_type == 'bert':
+        config = AutoConfig.from_pretrained(
+            args.config_name if args.config_name else args.model_name_or_path,
+            cache_dir=args.cache_dir if args.cache_dir else None,
+        )
+        tokenizer = AutoTokenizer.from_pretrained(
+            args.tokenizer_name if args.tokenizer_name else args.model_name_or_path,
+            do_lower_case=args.do_lower_case,
+            cache_dir=args.cache_dir if args.cache_dir else None,
+        )
+        model = AutoModelForQuestionAnswering.from_pretrained(
+            args.model_name_or_path,
+            from_tf=bool(".ckpt" in args.model_name_or_path),
+            config=config,
+            cache_dir=args.cache_dir if args.cache_dir else None,
+        )
+    elif args.model_type == 'kobert':
+        from kobert_wrapper import get_tokenizer, get_config, get_model
+        config = get_config(args)
+        tokenizer= get_tokenizer(args, config)
+        model = get_model(args, config)
+    else:
+        print("Crashed...............")
+        return
+    return config, tokenizer, model
 
 
 def main():
@@ -522,7 +565,7 @@ def main():
         #default=None,
         type=str,
         #required=True,
-        help="Model type selected in the list: " + ", ".join(MODEL_TYPES),
+        help="Model type selected in the list: " + ", ".join(['bert', 'kobert', 'hanbert']),
     )
     parser.add_argument(
         "--model_name_or_path",
@@ -530,7 +573,9 @@ def main():
         default=None,
         type=str,
         required=True,
-        help="Path to pre-trained model or shortcut name selected in the list: " + ", ".join(ALL_MODELS),
+        help="Path to pre-trained model or shortcut name selected"
+        " If it is shortcut name, you need to check model type"
+        " Only 'bert' supports some list of pretrained model",
     )
     parser.add_argument(
         "--output_dir",
@@ -540,8 +585,6 @@ def main():
         #required=True,
         help="The output directory where the model checkpoints and predictions will be written.",
     )
-
-
     parser.add_argument(
         "--train_dir",
         default='resource/train/',
@@ -580,6 +623,14 @@ def main():
         action="store_true",
         help="If true, the SQuAD examples contain some that do not have an answer.",
     )
+
+    parser.add_argument(
+        "--dataset_type",
+        default='korquad2',
+        type=str,
+        help="We support " + ",".join(['korquad1', 'korquad2', 'squad1', 'squad2']),
+    )
+
     parser.add_argument(
         "--null_score_diff_threshold",
         type=float,
@@ -772,22 +823,7 @@ def main():
         # Make sure only the first process in distributed training will download model & vocab
         torch.distributed.barrier()
 
-    args.model_type = args.model_type.lower()
-    config = AutoConfig.from_pretrained(
-        args.config_name if args.config_name else args.model_name_or_path,
-        cache_dir=args.cache_dir if args.cache_dir else None,
-    )
-    tokenizer = AutoTokenizer.from_pretrained(
-        args.tokenizer_name if args.tokenizer_name else args.model_name_or_path,
-        do_lower_case=args.do_lower_case,
-        cache_dir=args.cache_dir if args.cache_dir else None,
-    )
-    model = AutoModelForQuestionAnswering.from_pretrained(
-        args.model_name_or_path,
-        from_tf=bool(".ckpt" in args.model_name_or_path),
-        config=config,
-        cache_dir=args.cache_dir if args.cache_dir else None,
-    )
+    config, tokenizer, model = load_model(args)
 
     if args.local_rank == 0:
         # Make sure only the first process in distributed training will download model & vocab
