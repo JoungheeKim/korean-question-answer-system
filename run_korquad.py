@@ -38,6 +38,9 @@ from transformers import (
     AutoTokenizer,
     get_linear_schedule_with_warmup,
     squad_convert_examples_to_features,
+    BertConfig,
+    BertForQuestionAnswering,
+    BertTokenizer
 )
 from transformers.data.processors.squad import SquadResult, SquadV1Processor, SquadV2Processor
 from korquad import KorquadV2Processor, korquad_convert_examples_to_features
@@ -54,6 +57,11 @@ MODEL_CONFIG_CLASSES = list(MODEL_FOR_QUESTION_ANSWERING_MAPPING.keys())
 MODEL_TYPES = tuple(conf.model_type for conf in MODEL_CONFIG_CLASSES)
 
 ALL_MODELS = sum((tuple(conf.pretrained_config_archive_map.keys()) for conf in MODEL_CONFIG_CLASSES), (),)
+from kobert_transformers.tokenization_kobert import KoBertTokenizer
+MODEL_CLASSES = {
+    "bert": (BertConfig, BertForQuestionAnswering, BertTokenizer),
+    "kobert": (BertConfig, BertForQuestionAnswering, KoBertTokenizer)
+}
 
 
 def set_seed(args):
@@ -536,50 +544,23 @@ def load_and_cache_examples(args, tokenizer, evaluate=False, output_examples=Fal
 def load_model(args):
     args.model_type = args.model_type.lower()
     assert args.model_type in ['bert', 'kobert'], '{} is not support in this script. Try another model'.format(args.model_type)
-    if args.model_type == 'bert':
-        config = AutoConfig.from_pretrained(
-            args.config_name if args.config_name else args.model_name_or_path,
-            cache_dir=args.cache_dir if args.cache_dir else None,
-        )
-        tokenizer = AutoTokenizer.from_pretrained(
-            args.tokenizer_name if args.tokenizer_name else args.model_name_or_path,
-            do_lower_case=args.do_lower_case,
-            cache_dir=args.cache_dir if args.cache_dir else None,
-        )
-        model = AutoModelForQuestionAnswering.from_pretrained(
-            args.model_name_or_path,
-            from_tf=bool(".ckpt" in args.model_name_or_path),
-            config=config,
-            cache_dir=args.cache_dir if args.cache_dir else None,
-        )
-    elif args.model_type == 'skt_kobert':
-        from kobert_wrapper import get_tokenizer, get_config, get_model
-        config = get_config(args)
-        tokenizer= get_tokenizer(args)
-        model = get_model(args, config)
-    elif args.model_type == 'kobert':
-        from kobert_transformers import get_kobert_model, get_tokenizer
-        tokenizer = get_tokenizer()
-        if args.model_name_or_path and (os.path.isdir(args.model_name_or_path) or os.path.isfile(args.model_name_or_path)):
-            config = AutoConfig.from_pretrained(
-                args.config_name if args.config_name else args.model_name_or_path,
-                cache_dir=args.cache_dir if args.cache_dir else None,
-            )
-            model = AutoModelForQuestionAnswering.from_pretrained(
-                args.model_name_or_path,
-                from_tf=bool(".ckpt" in args.model_name_or_path),
-                config=config,
-                cache_dir=args.cache_dir if args.cache_dir else None,
-            )
-        else:
-            from transformers import BertForQuestionAnswering
-            bert = get_kobert_model()
-            config = bert.config
-            model = BertForQuestionAnswering(config)
-            model.bert = bert
-    else:
-        print("Crashed...............")
-        return
+
+    config_class, model_class, tokenizer_class = MODEL_CLASSES[args.model_type]
+    config = config_class.from_pretrained(
+        args.config_name if args.config_name else args.model_name_or_path,
+        cache_dir=args.cache_dir if args.cache_dir else None,
+    )
+    tokenizer = tokenizer_class.from_pretrained(
+        args.tokenizer_name if args.tokenizer_name else args.model_name_or_path,
+        do_lower_case=args.do_lower_case,
+        cache_dir=args.cache_dir if args.cache_dir else None,
+    )
+    model = model_class.from_pretrained(
+        args.model_name_or_path,
+        from_tf=bool(".ckpt" in args.model_name_or_path),
+        config=config,
+        cache_dir=args.cache_dir if args.cache_dir else None,
+    )
     return config, tokenizer, model
 
 
