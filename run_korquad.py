@@ -39,11 +39,6 @@ from transformers import (
     get_linear_schedule_with_warmup,
     squad_convert_examples_to_features,
 )
-from korquad_metrics import (
-    compute_predictions_log_probs,
-    compute_predictions_logits,
-    squad_evaluate,
-)
 from transformers.data.processors.squad import SquadResult, SquadV1Processor, SquadV2Processor
 from korquad import KorquadV2Processor, korquad_convert_examples_to_features
 
@@ -363,6 +358,19 @@ def evaluate(args, model, tokenizer, prefix=""):
     else:
         output_null_log_odds_file = None
 
+    if args.dataset_type in ['korquad2']:
+        from korquad_metrics import (
+            compute_predictions_log_probs,
+            compute_predictions_logits,
+            squad_evaluate,
+        )
+    else:
+        from transformers.data.metrics.squad_metrics import (
+            compute_predictions_log_probs,
+            compute_predictions_logits,
+            squad_evaluate,
+        )
+
     # XLNet and XLM use a more complex post-processing procedure
     if args.model_type in ["xlnet", "xlm"]:
         start_n_top = model.config.start_n_top if hasattr(model, "config") else model.module.config.start_n_top
@@ -544,11 +552,31 @@ def load_model(args):
             config=config,
             cache_dir=args.cache_dir if args.cache_dir else None,
         )
-    elif args.model_type == 'kobert':
+    elif args.model_type == 'skt_kobert':
         from kobert_wrapper import get_tokenizer, get_config, get_model
         config = get_config(args)
-        tokenizer= get_tokenizer(args, config)
+        tokenizer= get_tokenizer(args)
         model = get_model(args, config)
+    elif args.model_type == 'kobert':
+        from kobert_transformers import get_kobert_model, get_tokenizer
+        tokenizer = get_tokenizer()
+        if args.model_name_or_path and (os.path.isdir(args.model_name_or_path) or os.path.isfile(args.model_name_or_path)):
+            config = AutoConfig.from_pretrained(
+                args.config_name if args.config_name else args.model_name_or_path,
+                cache_dir=args.cache_dir if args.cache_dir else None,
+            )
+            model = AutoModelForQuestionAnswering.from_pretrained(
+                args.model_name_or_path,
+                from_tf=bool(".ckpt" in args.model_name_or_path),
+                config=config,
+                cache_dir=args.cache_dir if args.cache_dir else None,
+            )
+        else:
+            from transformers import BertForQuestionAnswering
+            bert = get_kobert_model()
+            config = bert.config
+            model = BertForQuestionAnswering(config)
+            model.bert = bert
     else:
         print("Crashed...............")
         return
@@ -619,7 +647,7 @@ def main():
 
     parser.add_argument(
         "--version_2_with_negative",
-        default=True,
+        default=False,
         action="store_true",
         help="If true, the SQuAD examples contain some that do not have an answer.",
     )
