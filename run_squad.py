@@ -605,26 +605,18 @@ def main():
         help="The output directory where the model checkpoints and predictions will be written.",
     )
 
-    # Other parameters
     parser.add_argument(
-        "--data_dir",
+        "--train_dir",
         default=None,
         type=str,
-        help="The input data dir. Should contain the .json files for the task."
+        help="The input training directory"
              + "If no data dir or train/predict files are specified, will run with tensorflow_datasets.",
     )
     parser.add_argument(
-        "--train_file",
+        "--predict_dir",
         default=None,
         type=str,
-        help="The input training file. If a data dir is specified, will look for the file there"
-             + "If no data dir or train/predict files are specified, will run with tensorflow_datasets.",
-    )
-    parser.add_argument(
-        "--predict_file",
-        default=None,
-        type=str,
-        help="The input evaluation file. If a data dir is specified, will look for the file there"
+        help="The input evaluation file."
              + "If no data dir or train/predict files are specified, will run with tensorflow_datasets.",
     )
     parser.add_argument(
@@ -704,7 +696,7 @@ def main():
     parser.add_argument(
         "--per_gpu_eval_batch_size", default=8, type=int, help="Batch size per GPU/CPU for evaluation."
     )
-    parser.add_argument("--learning_rate", default=5e-5, type=float, help="The initial learning rate for Adam.")
+    parser.add_argument("--learning_rate", default=3e-5, type=float, help="The initial learning rate for Adam.")
     parser.add_argument(
         "--gradient_accumulation_steps",
         type=int,
@@ -715,7 +707,7 @@ def main():
     parser.add_argument("--adam_epsilon", default=1e-8, type=float, help="Epsilon for Adam optimizer.")
     parser.add_argument("--max_grad_norm", default=1.0, type=float, help="Max gradient norm.")
     parser.add_argument(
-        "--num_train_epochs", default=3.0, type=float, help="Total number of training epochs to perform."
+        "--num_train_epochs", default=1.0, type=float, help="Total number of training epochs to perform."
     )
     parser.add_argument(
         "--max_steps",
@@ -732,7 +724,7 @@ def main():
     )
     parser.add_argument(
         "--max_answer_length",
-        default=30,
+        default=100,
         type=int,
         help="The maximum length of an answer that can be generated. This is needed because the start "
              "and end predictions are not conditioned on one another.",
@@ -782,7 +774,7 @@ def main():
     parser.add_argument("--server_ip", type=str, default="", help="Can be used for distant debugging.")
     parser.add_argument("--server_port", type=str, default="", help="Can be used for distant debugging.")
 
-    parser.add_argument("--threads", type=int, default=1, help="multiple threads for converting example to features")
+    parser.add_argument("--threads", type=int, default=6, help="multiple threads for converting example to features")
     args = parser.parse_args()
 
     if args.doc_stride >= args.max_seq_length - args.max_query_length:
