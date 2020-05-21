@@ -151,6 +151,15 @@ class Korquad2_Converter(object):
         """
         return modified_paragraphs
 
+    ## 테스트용
+    def convert_html(self, html):
+        structure_contexts = get_wiki_context(html)
+        context_list, context_pos_list = self.merge_structure_contexts(structure_contexts)
+        paragraphs, paragraph_ids = self.merge_contexts_by_len(context_list, context_pos_list,
+                                                               self.max_paragraph_length)
+
+        return paragraphs
+
     def get_modified_paragraph(self, paragraph, paragraph_id, qas):
         paragraph_id = np.array(paragraph_id)
         modified_qas = []
