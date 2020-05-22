@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="ko">
+<style>
+
+    /*
+        스타일 : https://webdesign.tutsplus.com/ko/tutorials/css-experiments-with-a-search-form-input-and-button--cms-22069
+     */
+    body{
+      background: #343d46;
+    }
+
+    .box{
+      margin: 50px auto;
+      width: 300px;
+      height: 50px;
+    }
+
+    .container-4{
+      overflow: hidden;
+      width: 300px;
+      vertical-align: middle;
+      white-space: nowrap;
+    }
+
+    .container-4 input#search{
+      width: 300px;
+      height: 50px;
+      background: #2b303b;
+      border: none;
+      font-size: 10pt;
+      float: left;
+      color: #fff;
+      padding-left: 15px;
+      -webkit-border-radius: 5px;
+      -moz-border-radius: 5px;
+      border-radius: 5px;
+    }
+
+    .container-4 input#search::-webkit-input-placeholder {
+       color: #65737e;
+    }
+
+    .container-4 input#search:-moz-placeholder { /* Firefox 18- */
+       color: #65737e;
+    }
+
+    .container-4 input#search::-moz-placeholder {  /* Firefox 19+ */
+       color: #65737e;
+    }
+
+    .container-4 input#search:-ms-input-placeholder {
+       color: #65737e;
+    }
+
+    .container-4 button.icon{
+      -webkit-border-top-right-radius: 5px;
+      -webkit-border-bottom-right-radius: 5px;
+      -moz-border-radius-topright: 5px;
+      -moz-border-radius-bottomright: 5px;
+      border-top-right-radius: 5px;
+      border-bottom-right-radius: 5px;
+
+      border: none;
+      background: #232833;
+      height: 50px;
+      width: 50px;
+      color: #4f5b66;
+      opacity: 0;
+      font-size: 10pt;
+
+      -webkit-transition: all .55s ease;
+      -moz-transition: all .55s ease;
+      -ms-transition: all .55s ease;
+      -o-transition: all .55s ease;
+      transition: all .55s ease;
+    }
+
+    .container-4:hover button.icon, .container-4:active button.icon, .container-4:focus button.icon{
+        outline: none;
+        opacity: 1;
+        margin-left: -50px;
+    }
+
+    .container-4:hover button.icon:hover{
+        background: white;
+    }
+
+    .container-1{
+      width: 300px;
+      vertical-align: middle;
+      white-space: nowrap;
+      position: relative;
+    }
+
+    .container-1 .icon{
+      position: absolute;
+      top: 50%;
+      margin-left: 17px;
+      margin-top: 17px;
+      z-index: 1;
+      color: #4f5b66;
+    }
+
+    .container-1 textarea#answer{
+      width: 280px;
+      height:100px;
+      background: #2b303b;
+      border: none;
+      font-size: 15pt;
+      float: left;
+      color: white;
+      -webkit-border-radius: 5px;
+      -moz-border-radius: 5px;
+      border-radius: 5px;
+      text-align: center;
+      padding:10px;
+    }
+
+    .head1{
+        margin-top: 17px;
+        font-size: 40px;
+        vertical-align: middle;
+        position: relative;
+        text-align: center;
+        color:white;
+    }
+
+.cssload-thecube {
+	width: 73px;
+	height: 73px;
+	margin: 0 auto;
+	margin-top: 49px;
+
+    left:49%;
+    top:20%;
+	position: absolute;
+    z-index: 300;
+    transform: rotateZ(45deg);
+		-o-transform: rotateZ(45deg);
+		-ms-transform: rotateZ(45deg);
+		-webkit-transform: rotateZ(45deg);
+		-moz-transform: rotateZ(45deg);
+}
+.cssload-thecube .cssload-cube {
+	position: relative;
+	transform: rotateZ(45deg);
+		-o-transform: rotateZ(45deg);
+		-ms-transform: rotateZ(45deg);
+		-webkit-transform: rotateZ(45deg);
+		-moz-transform: rotateZ(45deg);
+}
+.cssload-thecube .cssload-cube {
+	float: left;
+	width: 50%;
+	height: 50%;
+	position: relative;
+	transform: scale(1.1);
+		-o-transform: scale(1.1);
+		-ms-transform: scale(1.1);
+		-webkit-transform: scale(1.1);
+		-moz-transform: scale(1.1);
+}
+.cssload-thecube .cssload-cube:before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgb(43,160,199);
+	animation: cssload-fold-thecube 2.76s infinite linear both;
+		-o-animation: cssload-fold-thecube 2.76s infinite linear both;
+		-ms-animation: cssload-fold-thecube 2.76s infinite linear both;
+		-webkit-animation: cssload-fold-thecube 2.76s infinite linear both;
+		-moz-animation: cssload-fold-thecube 2.76s infinite linear both;
+	transform-origin: 100% 100%;
+		-o-transform-origin: 100% 100%;
+		-ms-transform-origin: 100% 100%;
+		-webkit-transform-origin: 100% 100%;
+		-moz-transform-origin: 100% 100%;
+}
+.cssload-thecube .cssload-c2 {
+	transform: scale(1.1) rotateZ(90deg);
+		-o-transform: scale(1.1) rotateZ(90deg);
+		-ms-transform: scale(1.1) rotateZ(90deg);
+		-webkit-transform: scale(1.1) rotateZ(90deg);
+		-moz-transform: scale(1.1) rotateZ(90deg);
+}
+.cssload-thecube .cssload-c3 {
+	transform: scale(1.1) rotateZ(180deg);
+		-o-transform: scale(1.1) rotateZ(180deg);
+		-ms-transform: scale(1.1) rotateZ(180deg);
+		-webkit-transform: scale(1.1) rotateZ(180deg);
+		-moz-transform: scale(1.1) rotateZ(180deg);
+}
+.cssload-thecube .cssload-c4 {
+	transform: scale(1.1) rotateZ(270deg);
+		-o-transform: scale(1.1) rotateZ(270deg);
+		-ms-transform: scale(1.1) rotateZ(270deg);
+		-webkit-transform: scale(1.1) rotateZ(270deg);
+		-moz-transform: scale(1.1) rotateZ(270deg);
+}
+.cssload-thecube .cssload-c2:before {
+	animation-delay: 0.35s;
+		-o-animation-delay: 0.35s;
+		-ms-animation-delay: 0.35s;
+		-webkit-animation-delay: 0.35s;
+		-moz-animation-delay: 0.35s;
+}
+.cssload-thecube .cssload-c3:before {
+	animation-delay: 0.69s;
+		-o-animation-delay: 0.69s;
+		-ms-animation-delay: 0.69s;
+		-webkit-animation-delay: 0.69s;
+		-moz-animation-delay: 0.69s;
+}
+.cssload-thecube .cssload-c4:before {
+	animation-delay: 1.04s;
+		-o-animation-delay: 1.04s;
+		-ms-animation-delay: 1.04s;
+		-webkit-animation-delay: 1.04s;
+		-moz-animation-delay: 1.04s;
+}
+
+
+
+@keyframes cssload-fold-thecube {
+	0%, 10% {
+		transform: perspective(136px) rotateX(-180deg);
+		opacity: 0;
+	}
+	25%,
+				75% {
+		transform: perspective(136px) rotateX(0deg);
+		opacity: 1;
+	}
+	90%,
+				100% {
+		transform: perspective(136px) rotateY(180deg);
+		opacity: 0;
+	}
+}
+
+@-o-keyframes cssload-fold-thecube {
+	0%, 10% {
+		-o-transform: perspective(136px) rotateX(-180deg);
+		opacity: 0;
+	}
+	25%,
+				75% {
+		-o-transform: perspective(136px) rotateX(0deg);
+		opacity: 1;
+	}
+	90%,
+				100% {
+		-o-transform: perspective(136px) rotateY(180deg);
+		opacity: 0;
+	}
+}
+
+@-ms-keyframes cssload-fold-thecube {
+	0%, 10% {
+		-ms-transform: perspective(136px) rotateX(-180deg);
+		opacity: 0;
+	}
+	25%,
+				75% {
+		-ms-transform: perspective(136px) rotateX(0deg);
+		opacity: 1;
+	}
+	90%,
+				100% {
+		-ms-transform: perspective(136px) rotateY(180deg);
+		opacity: 0;
+	}
+}
+
+@-webkit-keyframes cssload-fold-thecube {
+	0%, 10% {
+		-webkit-transform: perspective(136px) rotateX(-180deg);
+		opacity: 0;
+	}
+	25%,
+				75% {
+		-webkit-transform: perspective(136px) rotateX(0deg);
+		opacity: 1;
+	}
+	90%,
+				100% {
+		-webkit-transform: perspective(136px) rotateY(180deg);
+		opacity: 0;
+	}
+}
+
+@-moz-keyframes cssload-fold-thecube {
+	0%, 10% {
+		-moz-transform: perspective(136px) rotateX(-180deg);
+		opacity: 0;
+	}
+	25%,
+				75% {
+		-moz-transform: perspective(136px) rotateX(0deg);
+		opacity: 1;
+	}
+	90%,
+				100% {
+		-moz-transform: perspective(136px) rotateY(180deg);
+		opacity: 0;
+	}
+}
+
+    #mask {
+	  position:absolute;
+	  left:0;
+	  top:0;
+	  z-index:100;
+	  background-color:#000;
+	  display:none;
+	}
+
+
+
+</style>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Korquad2.0 Q&A</title>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript">
+
+        function wrapWindowByMask(){
+            //화면의 높이와 너비를 구한다.
+            var maskHeight = $(document).height();
+            var maskWidth = $(window).width();
+
+            //마스크의 높이와 너비를 화면 것으로 만들어 전체 화면을 채운다.
+            $('#mask').css({'width':maskWidth,'height':maskHeight});
+
+            //애니메이션 효과 - 일단 1초동안 까맣게 됐다가 80% 불투명도로 간다.
+            //$('#mask').fadeIn(1000);
+            $('#mask').fadeTo("slow",0.6);
+        }
+
+        function query(){
+            var question = document.getElementById("search").value;
+            if(question == '' || question == undefined){
+                return;
+            }
+
+            params = {
+                "question":question,
+                "num":5
+            }
+            url = window.location.href + 'qa';
+            url = 'http://localhost:5013/qa';
+
+            $.ajax({
+                type: 'GET',
+                url: url,
+                async:true,
+                data: params,
+                contentType:"application/x-www-form-urlencoded; charset=UTF-8",
+                success: function(data) {
+                    //$('#Container').html(data);
+                    //if(isMenuHide) menuOff();
+                    //alert(data['answer']);
+                    $('#answer').val(data['answer']);
+                },
+                error: function(request, status, error) {
+                    alert(error);
+                }
+            });
+
+        }
+
+        $(document).ready(function(){
+	       $('#Progress_Loading').hide(); //첫 시작시 로딩바를 숨겨준다.
+        })
+        $(window).ajaxStart(function(){
+            wrapWindowByMask()
+            $('#Progress_Loading').show();
+        })
+        $(window).ajaxStop(function(){
+            $('#mask').hide();
+            $('#Progress_Loading').hide();
+        })
+
+        //$("#search").keyup(function(e){if(e.keyCode == 13)  query(); });
+
+
+    </script>
+
+</head>
+<body>
+
+    <div class="mask", id="mask"></div>
+    <div class="cssload-thecube" id="Progress_Loading">
+        <div class="cssload-cube cssload-c1"></div>
+        <div class="cssload-cube cssload-c2"></div>
+        <div class="cssload-cube cssload-c4"></div>
+        <div class="cssload-cube cssload-c3"></div>
+    </div>
+
+
+    <div class="head1">
+        Korquad2.0 Q&A
+    </div>
+
+    <div class="box">
+      <div class="container-4">
+        <input type="search" id="search" onkeyup="if(event.keyCode == 13) query();" placeholder="Search..." />
+        <button class="icon" onclick="query()"><i class="fa fa-search"></i></button>
+      </div>
+    </div>
+
+    <div class="box">
+        <div class="container-1">
+            <textarea id="answer" type="answer" readonly>
+            </textarea>
+        </div>
+    </div>
+</body>
+</html>
