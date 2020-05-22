@@ -498,7 +498,6 @@ def load_and_cache_examples(args, tokenizer, evaluate=False, output_examples=Fal
             temp_examples = processor.get_dev_examples(args.predict_dir, filename=predict_file)
             if temp_examples is not None and len(temp_examples)>0:
                 examples.extend(temp_examples)
-
     else:
         examples = []
         ## Find json file name

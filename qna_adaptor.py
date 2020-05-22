@@ -42,12 +42,15 @@ MODEL_CLASSES = {
     "kobert": (BertConfig, BertForQuestionAnswering, KoBertTokenizer),
     "distilkobert": (DistilBertConfig, DistilBertForQuestionAnswering, KoBertTokenizer),
 }
+
+QUESTION_ID = 'QA01'
+
 class QuestionAnswerResponsor():
-    def __init__(self, model_name_or_path:str='result/', device:str='gpu'):
+    def __init__(self, model_name_or_path:str='model/', device:str='gpu'):
         ## User Setting
         self.model_name_or_path = model_name_or_path
         self.device = torch.device("cuda" if torch.cuda.is_available() and device.lower() in ['gpu', 'cuda'] else "cpu")
-        self.batch_size = 1
+        self.batch_size = 4
 
         ## Training Setting
         training_args = torch.load(os.path.join(model_name_or_path, 'training_args.bin'))
@@ -80,7 +83,6 @@ class QuestionAnswerResponsor():
             datefmt="%m/%d/%Y %H:%M:%S",
             level=logging.INFO,
         )
-
 
     def get_answers(self, question:str, paragraphs:list):
         answers = None
@@ -144,7 +146,7 @@ class QuestionAnswerResponsor():
             self.tokenizer,
         )
 
-        return predictions
+        return predictions[QUESTION_ID]
 
 def load_json(path):
     with open(path, 'r', encoding='utf-8') as json_file:
@@ -173,7 +175,7 @@ def convert_format(question:str, paragraphs:list, tokenizer, args):
 
 def convert_to_example(question, paragraphs):
 
-    qas_id = 'text-01'
+    qas_id = QUESTION_ID
     question_text = question
     answer_text = None
     title = None
@@ -205,5 +207,4 @@ def convert_to_example(question, paragraphs):
 
 def to_list(tensor):
     return tensor.detach().cpu().tolist()
-
 
