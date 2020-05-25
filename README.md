@@ -3,4 +3,4 @@ This is project to analyze korquad 2.0
 
 
 ### Operating Q&A server
-![](imgs/sample_image.png)
+![](imgs/sample_image.gif)
