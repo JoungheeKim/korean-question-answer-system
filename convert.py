@@ -153,7 +153,7 @@ class Korquad2_Converter(object):
 
     ## 테스트용
     def convert_html(self, html):
-        structure_contexts = get_wiki_context(html)
+        structure_contexts = get_wiki_context(html, is_eval=True)
         context_list, context_pos_list = self.merge_structure_contexts(structure_contexts)
         paragraphs, paragraph_ids = self.merge_contexts_by_len(context_list, context_pos_list,
                                                                self.max_paragraph_length)

@@ -13,7 +13,7 @@ def get_wiki_urls(question:str):
 
     searched_urls = []
     if response.status_code == 200:
-        body = BeautifulSoup(response.text)
+        body = BeautifulSoup(response.text, 'lxml')
         ul = body.find('ul', class_='mw-search-results')
         a_tags = ul.find_all('div', class_='mw-search-result-heading')
 

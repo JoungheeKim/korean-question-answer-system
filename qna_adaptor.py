@@ -11,6 +11,7 @@ import json
 from korquad import korquadExample, korquad_convert_examples_to_features
 from korquad_metrics import compute_predictions_logits
 from kobert_transformers.tokenization_kobert import KoBertTokenizer
+import time
 
 from transformers import (
     AlbertConfig,
@@ -46,15 +47,18 @@ MODEL_CLASSES = {
 QUESTION_ID = 'QA01'
 
 class QuestionAnswerResponsor():
-    def __init__(self, model_name_or_path:str='model/', device:str='gpu'):
+    def __init__(self, model_name_or_path:str='model/', device:str='gpu', batch_size:int=4):
         ## User Setting
         self.model_name_or_path = model_name_or_path
         self.device = torch.device("cuda" if torch.cuda.is_available() and device.lower() in ['gpu', 'cuda'] else "cpu")
-        self.batch_size = 4
+        self.batch_size = batch_size
 
         ## Training Setting
         training_args = torch.load(os.path.join(model_name_or_path, 'training_args.bin'))
         self.args = training_args
+
+        ##Thread만 살짝 손봐볼까?
+        self.args.threads = 12
 
         ##Negative가 모델에 영향을 많이 주기 때문에 정답이 없는 것은 고려하지 않는다.
         self.args.version_2_with_negative = False
@@ -86,7 +90,11 @@ class QuestionAnswerResponsor():
 
     def get_answers(self, question:str, paragraphs:list):
         answers = None
+
+        start_time = time.time()
         dataset, examples, features = convert_format(question, paragraphs, self.tokenizer, self.args)
+        print("CONVERT에 걸린시간 : ", time.time()-start_time)
+
         eval_sampler = SequentialSampler(dataset)
         eval_dataloader = DataLoader(dataset, sampler=eval_sampler, batch_size=self.batch_size)
         if self.args.n_gpu > 1 and not isinstance(self.model, torch.nn.DataParallel):
@@ -159,7 +167,10 @@ class config_parser():
 
 
 def convert_format(question:str, paragraphs:list, tokenizer, args):
+    start_time = time.time()
     examples = convert_to_example(question, paragraphs)
+    print("EXAMPLE 변환시간 : ", time.time()-start_time)
+
     features, dataset = korquad_convert_examples_to_features(
         examples=examples,
         tokenizer=tokenizer,

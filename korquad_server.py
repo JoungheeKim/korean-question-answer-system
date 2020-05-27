@@ -6,6 +6,7 @@ from qna_adaptor import QuestionAnswerResponsor
 from convert import Korquad2_Converter
 from scrap import get_wiki_data
 from argparse import ArgumentParser
+import time
 import sys
 import os
 
@@ -51,7 +52,7 @@ class QuestionAnswerServer(Resource):
 		try:
 			parser = reqparse.RequestParser()
 			parser.add_argument('question', type=str, default='')
-			parser.add_argument('num', type=int, default=5)
+			parser.add_argument('num', type=int, default=1)
 			args = parser.parse_args()
 			args['question'] = args['question'].strip()
 			if type(args['num']) != int or args['num'] == 0:
@@ -59,7 +60,7 @@ class QuestionAnswerServer(Resource):
 
 		except Exception as e:
 			args['question'] = ''
-			args['num'] = 10
+			args['num'] = 5
 
 		return args
 
@@ -68,18 +69,30 @@ class QuestionAnswerServer(Resource):
 		msg = {}
 		try:
 			args = self.getParameter(reqparse)
+
+			start_time = time.time()
 			_qnaResponsor = QuestionResponsor.instance(self.config.model_name_or_path)
 			_convertResponsor = ConvertResponsor.instance()
 			print(args['question'])
+			print('시간정보1 : ', (time.time() - start_time), 'sec')
 
+			start_time = time.time()
 			contents = get_wiki_data(args['question'], int(args['num']))
+			print('시간정보2 : ', (time.time()-start_time), 'sec')
+
 			paragraphs = []
 			answer = ''
+
+			start_time = time.time()
 			for content in contents:
 				temp_paragraphs = _convertResponsor.convert_html(content)
 				paragraphs.extend(temp_paragraphs)
+			print('시간정보3 : ', (time.time() - start_time), 'sec')
+
+			start_time = time.time()
 			if len(paragraphs) > 0:
 				answer = _qnaResponsor.get_answers(args['question'], paragraphs)
+			print('시간정보4 : ', (time.time() - start_time), 'sec')
 
 			msg['answer'] = answer
 		except Exception as e:
