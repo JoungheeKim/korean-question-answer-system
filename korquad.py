@@ -351,7 +351,12 @@ def convert_to_korquad_example(entry, is_training):
     html = entry["context"]
     qas = entry["qas"]
 
-    modified_paragraphs = converter.convert_to_squad_format(html, qas)
+    ## 답변길이가 긴 것들은 BERT계열의 모델의 성능만 낮추는 결과를 초래함. 따라서 제한한다.
+    modified_qas = converter.get_qas_by_len(qas)
+    if len(modified_qas)==0:
+        return []
+
+    modified_paragraphs = converter.convert_to_squad_format(html, modified_qas)
     temp_examples = {}
     for modified_paragraph in modified_paragraphs:
         context_text = modified_paragraph["context"]
@@ -399,9 +404,10 @@ def convert_to_korquad_example(entry, is_training):
     return [example for qas_id, example in temp_examples.items()]
 
 class KorquadV2Processor(SquadProcessor):
-    def __init__(self, threads=1, max_paragraph_length=428):
+    def __init__(self, threads=1, max_paragraph_length=428, max_answer_text_length=428):
         self.converter = Korquad2_Converter(
-            max_paragraph_length=max_paragraph_length)
+            max_paragraph_length=max_paragraph_length,
+            max_answer_text_length=max_answer_text_length)
         super().__init__()
         self.threads = threads
 

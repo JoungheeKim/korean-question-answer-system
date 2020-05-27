@@ -6,6 +6,7 @@ from tqdm import tqdm
 from random import randint
 from multiprocessing import Pool
 from preprocess import get_wiki_context
+from bs4 import BeautifulSoup
 
 
 def build_parser():
@@ -19,7 +20,7 @@ def build_parser():
 
     ## CONVERT OPTION
     parser.add_argument("--max_paragraph_length", dest="max_paragraph_length", default=768, type=int, help='단락의 길이')  ## 사용안함 .....
-    parser.add_argument("--max_answer_length", dest="max_answer_length", default=128, type=int, help='질문의 길이')  ## 사용안함 .....
+    parser.add_argument("--max_answer_text_length", dest="max_answer_text_length", default=128, type=int, help='질문의 길이')  ## 사용안함 .....
     parser.add_argument("--original_qas_include", action="store_true",
                         help='질문에 대한 Original 대답을 포함할 것인지 여부 (TRUE/FALSE)')
     parser.add_argument("--save_each", dest="save_each", action="store_true", default=False,
@@ -43,7 +44,7 @@ def convert_file_into_squad(config):
     ## INIT Converter
     converter = Korquad2_Converter(
         max_paragraph_length=config.max_paragraph_length,
-        max_answer_length=config.max_answer_length
+        max_answer_text_length=config.max_answer_text_length
         )
 
     print("INITALIZE Converter Done..")
@@ -109,7 +110,7 @@ def save_json(path, data):
 
 
 class Korquad2_Converter(object):
-    def __init__(self, max_paragraph_length=768, max_answer_length=128):
+    def __init__(self, max_paragraph_length=768, max_answer_text_length=3000):
         self.parser = {
             'table': ['{', '}'],
             'ul': ['{', '}'],
@@ -126,7 +127,16 @@ class Korquad2_Converter(object):
         self.sep_token = '|'
 
         self.max_paragraph_length = max_paragraph_length
-        self.max_answer_length = max_answer_length
+        self.max_answer_text_length = max_answer_text_length
+
+    def get_qas_by_len(self, qas):
+        modefied_qas = []
+        for qa in qas:
+            text = qa['answer']['text']
+            text = text.strip()
+            if len(text) <= self.max_answer_text_length:
+                modefied_qas.append(qa)
+        return modefied_qas
 
     def convert_to_squad_format(self, html, qas):
         structure_contexts = get_wiki_context(html)

@@ -524,7 +524,7 @@ def load_and_cache_examples(args, tokenizer, evaluate=False, output_examples=Fal
             torch.save({"features": features, "dataset": dataset, "examples": examples}, cached_features_file)
     """
     if args.dataset_type in ['korquad2']:
-        processor = KorquadV2Processor(args.threads, args.max_paragraph_length)
+        processor = KorquadV2Processor(args.threads, args.max_paragraph_length, args.max_answer_text_length) if args.max_answer_text_length is not None else KorquadV2Processor(args.threads, args.max_paragraph_length)
     else:
         processor = SquadV2Processor() if args.version_2_with_negative else SquadV1Processor()
     if evaluate:
@@ -648,6 +648,13 @@ def main():
         type=int,
         help="The maximum number of tokens for the paragraph. But it would not truncate paragraph."
              "when merging paragrah i prevent to make paragraphs which is more than one to exceed max length",
+    )
+    parser.add_argument(
+        "--max_answer_text_length",
+        type=int,
+        help="The maximum number of text length for the answer to make Q&A quality better."
+             "when merging answer i just delete to make paragraphs which is more than one to exceed max length"
+             "So If you don't want this option then leave None",
     )
     ####################################################################################
 
