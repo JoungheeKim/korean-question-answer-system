@@ -15,17 +15,22 @@ Q&A 시스템 개발에 가이드라인을 제공하기 위하여 기획한 프�
 ## Installation
 
 ## Experiment Results
-총 3개 Model, 4개 Dataset에서 테스트를 진행하였습니다. 
+- 총 3개 Model, 4개 Dataset에서 테스트를 진행
+- 모든 Hyper-parameter는 고정하고 테스트를 진행
 - 평가지표 (EM/F1)
   * EM : Exact Match (%)
   * F1 : F1 Score (%)
-- max_seq_length = 512
+- Dataset 구성
+  * korquad1.0 + aihub : korquad1.0과 Aihub 데이터를 함께 학습하고, valid 데이터로 korquad1.0 dev를 사용.
+  * aihub(8:2) : AIhub 데이터를 8:2나누어 train, valid 데이터로 사용.
+- Hyper-parameter Setting
+  * max_seq_lenght : 512
 
-|                         | korquad1.0 | korquad1.0 + aihub |
-| ----------------------- | --------------- | ------------ |
-| KoBERT                  | 52.81           | 80.27        |
-| Bert-multilingual       | 70.42           | 90.25        |
-| Hanbert                 | 64.32           | 84.78        |
+|                         | korquad1.0 | korquad1.0 + aihub | aihub (8:2)  | korquad2.0 |
+| ----------------------- | --------------- | ------------ | ------------ | ------------ |
+| KoBERT                  | 52.81           | 80.27        |              |              |
+| Bert-multilingual       | 70.42           | 90.25        |              |              |
+| Hanbert                 | 64.32           | 84.78        |              |              |
 
 ## Dataset
  - [korquad1.0](https://korquad.github.io/category/1.0_KOR.html)
