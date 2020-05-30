@@ -14,6 +14,24 @@ Q&A 시스템 개발에 가이드라인을 제공하기 위하여 기획한 프�
 
 ## Installation
 
+## Experiment Results
+총 3개 Model, 4개 Dataset에서 테스트를 진행하였습니다. 
+- 평가지표 (EM/F1)
+  * EM : Exact Match (%)
+  * F1 : F1 Score (%)
+- max_seq_length = 512
+
+|                         | korquad1.0 | korquad1.0 + aihub |
+| ----------------------- | --------------- | ------------ |
+| KoBERT                  | 52.81           | 80.27        |
+| Bert-multilingual       | 70.42           | 90.25        |
+| Hanbert                 | 64.32           | 84.78        |
+
+## Dataset
+ - [korquad1.0](https://korquad.github.io/category/1.0_KOR.html)
+ - [korquad2.0](https://korquad.github.io/)
+ - [Aihub 일반상식](http://www.aihub.or.kr/aidata/84)
+
 ## Reference
 - [Kobert Github](https://github.com/SKTBrain/KoBERT)
 - [HanBert Github](https://github.com/tbai2019/HanBert-54k-N)
