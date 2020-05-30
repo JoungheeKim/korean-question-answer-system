@@ -4,5 +4,8 @@
 
 ## 프로젝트 진행 영상
 프로젝트와 관련된 제안, 중간, 최종 영상입니다.
+1. [제안발표 영상](https://youtu.be/JQn5JIthlAI)
+2. [중간발표 영상](https://youtu.be/fGQAx_wCm3E)
+3. [최종발표 ]
 
 
