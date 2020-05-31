@@ -55,8 +55,12 @@ from transformers import (
     squad_convert_examples_to_features
 )
 from transformers.data.processors.squad import SquadResult, SquadV1Processor, SquadV2Processor
-
 from kobert_transformers.tokenization_kobert import KoBertTokenizer
+
+## HanBERT 추가
+#from HanBert.tokenization_hanbert import HanBertTokenizer
+from tokenization_hanbert import HanBertTokenizer
+
 
 ## Korquad 2.0 추가
 from korquad import KorquadV2Processor, korquad_convert_examples_to_features
@@ -81,6 +85,7 @@ MODEL_CLASSES = {
     "distilbert": (DistilBertConfig, DistilBertForQuestionAnswering, DistilBertTokenizer),
     "albert": (AlbertConfig, AlbertForQuestionAnswering, AlbertTokenizer),
     "kobert": (BertConfig, BertForQuestionAnswering, KoBertTokenizer),
+    "hanbert":(BertConfig, BertForQuestionAnswering, HanBertTokenizer),
     "distilkobert": (DistilBertConfig, DistilBertForQuestionAnswering, KoBertTokenizer),
 }
 
