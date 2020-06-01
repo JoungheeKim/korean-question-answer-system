@@ -1,9 +1,7 @@
 # Question & Answer System
 이 프로젝트는 고려대학교 강필성 교수님의 [자연어처리](https://github.com/pilsung-kang/text-analytics) 수업에서 진행한 프로젝트입니다. 
-  
 Q&A 시스템 개발에 가이드라인을 제공하기 위하여 기획한 프로젝트이며 제작물에서 사용한 방법론, 데이터, 코드를 다양한 곳에서 참조하여 개발하였습니다.
   
-함께한 [DSBA 연구실](http://dsba.korea.ac.kr/) 동료들(이유경, 김혜연, 김명섭) 수고가 많았습니다.
 ![](imgs/sample_image.gif)
 
 ## 프로젝트 진행 영상
