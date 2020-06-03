@@ -1,6 +1,6 @@
 # Question & Answer System
 이 프로젝트는 고려대학교 강필성 교수님의 [자연어처리](https://github.com/pilsung-kang/text-analytics) 수업에서 진행한 프로젝트입니다. 
-Pretraining 모델을 활용한 Q&A 시스템 개발에 가이드라인을 제공하기 위하여 기획한 프로젝트이며 제작물에서 사용한 방법론, 데이터, 코드를 다양한 곳에서 참조하여 개발하였습니다.
+Pre-training 모델(BERT)을 활용하여 Q&A 시스템을 개발하는 것의 가이드라인을 제공하기 위하여 기획한 프로젝트이며 제작물에서 사용한 방법론, 데이터, 코드를 다양한 곳에서 참조하여 개발하였습니다.
   
 ![](imgs/sample_image.gif)
 
@@ -22,6 +22,9 @@ Pretraining 모델을 활용한 Q&A 시스템 개발에 가이드라인을 제�
   * korquad1.0 + aihub : korquad1.0과 Aihub 데이터를 함께 학습하고, valid 데이터로 korquad1.0 dev를 사용.
   * aihub(8:2) : AIhub 데이터를 8:2나누어 train, valid 데이터로 사용.
 - Hyper-parameter Setting
+  * max_seq_lenght : 512
+  * max_seq_lenght : 512
+  * max_seq_lenght : 512
   * max_seq_lenght : 512
 
 |                         |       korquad1.0       |  korquad1.0 + aihub   |      aihub (8:2)      |      korquad2.0       |
