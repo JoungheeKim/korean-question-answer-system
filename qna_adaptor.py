@@ -33,6 +33,8 @@ from transformers import (
     XLNetForQuestionAnswering,
     XLNetTokenizer,
 )
+from tokenization_hanbert import HanBertTokenizer
+
 MODEL_CLASSES = {
     "bert": (BertConfig, BertForQuestionAnswering, BertTokenizer),
     "roberta": (RobertaConfig, RobertaForQuestionAnswering, RobertaTokenizer),
@@ -41,6 +43,7 @@ MODEL_CLASSES = {
     "distilbert": (DistilBertConfig, DistilBertForQuestionAnswering, DistilBertTokenizer),
     "albert": (AlbertConfig, AlbertForQuestionAnswering, AlbertTokenizer),
     "kobert": (BertConfig, BertForQuestionAnswering, KoBertTokenizer),
+    "hanbert":(BertConfig, BertForQuestionAnswering, HanBertTokenizer),
     "distilkobert": (DistilBertConfig, DistilBertForQuestionAnswering, KoBertTokenizer),
 }
 

@@ -3,8 +3,9 @@ from flask import Flask, render_template
 from flask_cors import CORS
 from flask_restful import Resource, Api, reqparse
 from qna_adaptor import QuestionAnswerResponsor
-from convert import Korquad2_Converter
-from scrap import get_wiki_data
+from wiki_convert import Korquad2_Converter
+from blog_convert import Blog_Converter
+from scrap import get_wiki_data, get_blog_data
 from argparse import ArgumentParser
 import time
 import sys
@@ -35,9 +36,11 @@ class SingletonInstane:
 class QuestionResponsor(QuestionAnswerResponsor, SingletonInstane):
     pass
 
-class ConvertResponsor(Korquad2_Converter, SingletonInstane):
+class WikiResponsor(Korquad2_Converter, SingletonInstane):
     pass
 
+class BlogResponsor(Blog_Converter, SingletonInstane):
+    pass
 
 
 
@@ -72,20 +75,26 @@ class QuestionAnswerServer(Resource):
 
 			start_time = time.time()
 			_qnaResponsor = QuestionResponsor.instance(self.config.model_name_or_path)
-			_convertResponsor = ConvertResponsor.instance()
+			_wikiResponsor = WikiResponsor.instance()
+			_blogResponsor = BlogResponsor.instance()
 			print(args['question'])
 			print('시간정보1 : ', (time.time() - start_time), 'sec')
 
 			start_time = time.time()
-			contents = get_wiki_data(args['question'], int(args['num']))
+			wiki_contents = get_wiki_data(args['question'], int(args['num']))
+			blog_contents = get_blog_data(args['question'], int(args['num']))
+
 			print('시간정보2 : ', (time.time()-start_time), 'sec')
 
 			paragraphs = []
 			answer = ''
 
 			start_time = time.time()
-			for content in contents:
-				temp_paragraphs = _convertResponsor.convert_html(content)
+			for wiki_content in wiki_contents:
+				temp_paragraphs = _wikiResponsor.convert_html(wiki_content)
+				paragraphs.extend(temp_paragraphs)
+			for blog_content in blog_contents:
+				temp_paragraphs = _blogResponsor.convert_html(blog_content)
 				paragraphs.extend(temp_paragraphs)
 			print('시간정보3 : ', (time.time() - start_time), 'sec')
 
