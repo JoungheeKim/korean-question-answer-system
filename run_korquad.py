@@ -28,8 +28,6 @@ from torch.utils.data import DataLoader, RandomSampler, SequentialSampler
 from torch.utils.data.distributed import DistributedSampler
 from tqdm import tqdm, trange
 
-from evaluate_v1_0 import eval_during_train
-
 from transformers import (
     WEIGHTS_NAME,
     AdamW,
@@ -266,21 +264,9 @@ def train(args, train_dataset, model, tokenizer):
                         for key in sorted(results.keys()):
                             logger.info("  %s = %s", key, str(results[key]))
 
-                        # Write the evaluation result on file
-                        logger.info("***** Official Eval results *****")
-                        with open("eval_result_{}_{}.txt".format(list(filter(None, args.model_name_or_path.split("/"))).pop(),
-                                                                 str(args.max_seq_length)), "a", encoding='utf-8') as f:
-                            official_eval_results = eval_during_train(args)
-                            f.write("Step: {}\n".format(global_step))
-                            for key in sorted(official_eval_results.keys()):
-                                logger.info("  %s = %s", key, str(official_eval_results[key]))
-                                f.write(" {} = {}\n".format(key, str(official_eval_results[key])))
-
                         for key, value in results.items():
                             tb_writer.add_scalar("eval_{}".format(key), value, global_step)
 
-                        for key, value in official_eval_results.items():
-                            tb_writer.add_scalar("eval_{}".format(key), value, global_step)
 
                     tb_writer.add_scalar("lr", scheduler.get_lr()[0], global_step)
                     tb_writer.add_scalar("loss", (tr_loss - logging_loss) / args.logging_steps, global_step)
