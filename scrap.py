@@ -83,11 +83,10 @@ def get_blog_data(question:str, num=5):
     return contents
 
 def get_blog_content(url:str):
-    temp_url = url
+    #temp_url = url
 
     ## 네이버 블로그는 iframe에서 source url을 추출하여 사용한다.
-    if 'blog.naver.com' in url or 'blog.me' in url:
-        temp_url = find_iframe_url(url)
+    temp_url = find_iframe_url(url)
 
     response = requests.get(temp_url)
     if response.status_code == 200:
@@ -101,8 +100,13 @@ def find_iframe_url(url):
     response = requests.get(url)
     if response.status_code == 200:
         soup = BeautifulSoup(response.text, 'lxml')
-        iframe_located = soup.find('iframe')['src']
-        if iframe_located is not None and iframe_located is not '':
-            iframe_url = 'https://blog.naver.com/' + iframe_located
+        iframe = soup.find('iframe')
+        if iframe is not None:
+            iframe_located = iframe['src']
+            if iframe_located is not None and iframe_located is not '':
+                if 'blog.naver.com' in iframe_located or 'blog.me' in url:
+                    iframe_url = find_iframe_url(iframe_located)
+                else:
+                    iframe_url = 'https://blog.naver.com/' + iframe_located
 
     return iframe_url

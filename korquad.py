@@ -340,7 +340,7 @@ class KorquadFeatures(SquadFeatures):
         self.example_idx = example_idx
 
 from transformers.data.processors.squad import SquadProcessor
-from convert import Korquad2_Converter
+from wiki_convert import Korquad2_Converter
 
 def convert_to_korquad_example_init(converter_for_convert):
     global converter
