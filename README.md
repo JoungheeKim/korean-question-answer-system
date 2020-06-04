@@ -22,10 +22,11 @@ Pre-training 모델(BERT)을 활용하여 Q&A 시스템을 개발하는 것의 �
   * korquad1.0 + aihub : korquad1.0과 Aihub 데이터를 함께 학습하고, valid 데이터로 korquad1.0 dev를 사용.
   * aihub(8:2) : AIhub 데이터를 8:2나누어 train, valid 데이터로 사용.
 - Hyper-parameter Setting
-  * max_seq_lenght : 512
-  * max_seq_lenght : 512
-  * max_seq_lenght : 512
-  * max_seq_lenght : 512
+  * max_seq_length : 512
+  * max_answer_length : 100
+  * batch_size : 32
+  * learning_rate : 3e-5
+  * max_paragraph_length : 1
 
 |                         |       korquad1.0       |  korquad1.0 + aihub   |      aihub (8:2)      |      korquad2.0       |
 | ----------------------- | ---------------------- | --------------------- | --------------------- | --------------------- |
@@ -44,6 +45,7 @@ Pre-training 모델(BERT)을 활용하여 Q&A 시스템을 개발하는 것의 �
 - [HanBert Transformer Github](https://github.com/monologg/HanBert-Transformers)
 - [KoBERT-KorQuAD Github](https://github.com/monologg/KoBERT-KorQuAD)
 - [huggingface transformers Github](https://github.com/huggingface/transformers)
+- [HTML Style CSS](https://webdesign.tutsplus.com/ko/tutorials/css-experiments-with-a-search-form-input-and-button--cms-22069)
 
 ## Source Code Description
 - 'korquad_metrics.py', 
