@@ -2,7 +2,7 @@
 이 프로젝트는 고려대학교 강필성 교수님의 [자연어처리](https://github.com/pilsung-kang/text-analytics) 수업에서 진행한 프로젝트입니다. 
 Pre-training 모델(BERT)을 활용하여 Q&A 시스템을 개발하는 것의 가이드라인을 제공하기 위하여 기획한 프로젝트이며 제작물에서 사용한 방법론, 데이터, 코드를 다양한 곳에서 참조하여 개발하였습니다.
   
-![](imgs/sample_image.gif)
+![](img/sample_image.gif)
 
 ## 프로젝트 진행 영상
 프로젝트와 관련된 제안, 중간, 최종 영상입니다.
