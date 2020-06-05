@@ -17,12 +17,13 @@ def get_wiki_urls(question:str):
     if response.status_code == 200:
         body = BeautifulSoup(response.text, 'lxml')
         ul = body.find('ul', class_='mw-search-results')
-        a_tags = ul.find_all('div', class_='mw-search-result-heading')
-
-        for a_tag in a_tags:
-            if a_tag.a is not None:
-                #print(a_tag.a['href'])
-                searched_urls.append(a_tag.a['href'])
+        if ul is not None:
+            a_tags = ul.find_all('div', class_='mw-search-result-heading')
+            if a_tags is not None:
+                for a_tag in a_tags:
+                    if a_tag.a is not None:
+                        #print(a_tag.a['href'])
+                        searched_urls.append(a_tag.a['href'])
 
     return searched_urls
 
@@ -60,12 +61,14 @@ def get_blog_urls(question:str):
     if response.status_code == 200:
         body = BeautifulSoup(response.text, 'lxml')
         ul = body.find('ul', id='elThumbnailResultArea')
-        a_tags = ul.find_all('li', class_='sh_blog_top')
+        if ul is not None:
+            a_tags = ul.find_all('li', class_='sh_blog_top')
 
-        for a_tag in a_tags:
-            temp_a = a_tag.find('a', class_='_sp_each_url')
-            if temp_a is not None:
-                searched_urls.append(temp_a['href'])
+            if a_tags is not None:
+                for a_tag in a_tags:
+                    temp_a = a_tag.find('a', class_='_sp_each_url')
+                    if temp_a is not None:
+                        searched_urls.append(temp_a['href'])
 
     return searched_urls
 
