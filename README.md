@@ -16,7 +16,7 @@ Pre-training 모델(BERT)을 활용하여 Q&A 시스템을 개발하는 것의 �
 - 과정 : 1. Web Crawling  -->  2. Preprocess  -->  3. BERT Model  -->  4. Postprocess
 
 ### 1. Web Crawling
-![](img/system_crawl.png)
+![](img/system_crawl.png)<!-- .element height="50%" width="50%" -->
 - [네이버 블로그](https://section.blog.naver.com/BlogHome.nhn?directoryNo=0&currentPage=1&groupId=0), [위키피디아](https://ko.wikipedia.org/w/index.php?search=&title=%ED%8A%B9%EC%88%98:%EA%B2%80%EC%83%89&go=%EB%B3%B4%EA%B8%B0) 의 검색엔진에 질문을 넣고 상위 URL N개를 크롤링 하여 Reference Source로 활용하는 과정
 - [Crawling 정량적 평가](https://github.com/JoungheeKim/korean-question-answer-system/blob/master/module_test/02_Preprocess%20Module%20Test.ipynb) 방법 및 결과 참고
 
