@@ -16,20 +16,22 @@ Pre-training 모델(BERT)을 활용하여 Q&A 시스템을 개발하는 것의 �
 - 과정 : 1. Web Crawling  -->  2. Preprocess  -->  3. BERT Model  -->  4. Postprocess
 
 ### 1. Web Crawling
-- [네이버 블로그](https://section.blog.naver.com/BlogHome.nhn?directoryNo=0&currentPage=1&groupId=0), [위키피디아](https://ko.wikipedia.org/w/index.php?search=&title=%ED%8A%B9%EC%88%98:%EA%B2%80%EC%83%89&go=%EB%B3%B4%EA%B8%B0) 의 검색엔진에 질문을 넣고 상위 URL N개를 크롤링 하여 Reference Source로 활용하는 과정.
-
+- [네이버 블로그](https://section.blog.naver.com/BlogHome.nhn?directoryNo=0&currentPage=1&groupId=0), [위키피디아](https://ko.wikipedia.org/w/index.php?search=&title=%ED%8A%B9%EC%88%98:%EA%B2%80%EC%83%89&go=%EB%B3%B4%EA%B8%B0) 의 검색엔진에 질문을 넣고 상위 URL N개를 크롤링 하여 Reference Source로 활용하는 과정입니다.
+- [Crawling 정량적 평가](module_test/01_Crawler Module Test.ipynb) 방법 및 결과를 참고하시기 바랍니다.
 
 ### 2. Preprocess
+- Crawling을 통해 얻은 Reference Source(HTML)는 독특한 구조적 특징을 갖고 있습니다. 이를 모델이 학습할 수 있도록 줄글로 변환하는 과정입니다.
+- [Preprocess 정량적 평가](module_test/02_Preprocess Module Test.ipynb) 방법 및 결과를 참고하시기 바랍니다.
 
 ### 3. BERT Model
-- 총 3개 Model, 4개 Dataset에서 테스트를 진행
-- Hyper-parameter를 고정하고 모델과 데이터를 변경하며 테스트를 진행
+- 총 3개 Model, 4개 Dataset에서 테스트를 진행합니다.
+- Hyper-parameter를 고정하고 모델과 데이터를 변경하며 테스트를 진행합니다.
 - 평가지표 (EM/F1)
   * EM : Exact Match (%)
   * F1 : F1 Score (%)
 - Dataset 구성
-  * korquad1.0 + aihub : korquad1.0과 Aihub 데이터를 함께 학습하고, valid 데이터로 korquad1.0 dev를 사용.
-  * aihub(8:2) : AIhub 데이터를 8:2나누어 train, valid 데이터로 사용.
+  * korquad1.0 + aihub : korquad1.0과 Aihub 데이터를 함께 학습하고, valid 데이터로 korquad1.0 dev를 사용합니다.
+  * aihub(8:2) : AIhub 데이터를 8:2나누어 train, valid 데이터로 사용합니다.
 - Hyper-parameter Setting
   * max_seq_length : 512
   * max_answer_length : 100
@@ -46,9 +48,11 @@ Pre-training 모델(BERT)을 활용하여 Q&A 시스템을 개발하는 것의 �
 
 ### 4. Postprocess
 
-## Installation
 
-## Model 학습 방법
+
+## 설치 방법
+
+## 모델 학습 방법
 
 ## 서버 활용 방법
 
