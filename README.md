@@ -8,25 +8,20 @@ Pre-training 모델(BERT)을 활용하여 Q&A 시스템을 개발하는 것의 �
 프로젝트와 관련된 제안, 중간, 최종 영상입니다.
 1. [제안발표 영상](https://youtu.be/JQn5JIthlAI)
 2. [중간발표 영상](https://youtu.be/fGQAx_wCm3E)
-3. [최종발표 영상]()
+3. [최종발표 영상](https://youtu.be/uwzPH9xOM30)
 
 ## 시스템 설명
 ![](img/system_overview.png)
-    목표 : '질문'에 대한 '대답' 을 찾는 시스템을 개발.
-    과정 : 1. Web Crawling  -->  2. Preprocess  -->  3. BERT Model  -->  4. Postprocess
+- 목표 : '질문'에 대한 '대답' 을 찾는 시스템을 개발
+- 과정 : 1. Web Crawling  -->  2. Preprocess  -->  3. BERT Model  -->  4. Postprocess
 
 ### 1. Web Crawling
-[네이버 블로그](https://section.blog.naver.com/BlogHome.nhn?directoryNo=0&currentPage=1&groupId=0), [위키피디아](https://ko.wikipedia.org/w/index.php?search=&title=%ED%8A%B9%EC%88%98:%EA%B2%80%EC%83%89&go=%EB%B3%B4%EA%B8%B0) 의 검색엔진에 질문을 넣고 상위 URL N개를 크롤링 하여 Reference Source로 활용하는 과정.
+- [네이버 블로그](https://section.blog.naver.com/BlogHome.nhn?directoryNo=0&currentPage=1&groupId=0), [위키피디아](https://ko.wikipedia.org/w/index.php?search=&title=%ED%8A%B9%EC%88%98:%EA%B2%80%EC%83%89&go=%EB%B3%B4%EA%B8%B0) 의 검색엔진에 질문을 넣고 상위 URL N개를 크롤링 하여 Reference Source로 활용하는 과정.
+
 
 ### 2. Preprocess
 
 ### 3. BERT Model
-
-### 4. Postprocess
-
-## Installation
-
-## Model Experiment Results
 - 총 3개 Model, 4개 Dataset에서 테스트를 진행
 - Hyper-parameter를 고정하고 모델과 데이터를 변경하며 테스트를 진행
 - 평가지표 (EM/F1)
@@ -48,6 +43,15 @@ Pre-training 모델(BERT)을 활용하여 Q&A 시스템을 개발하는 것의 �
 | Bert-multilingual       | F1: 78.04 / EM: 70.69  | F1: 78.35 / EM: 71.04 | F1: 75.91 / EM: 62.37 | F1: 49.64 / EM: 43.13 |
 | Hanbert                 | F1: 84.87 / EM: 78.94  | F1: 85.62 / EM: 79.63 | F1: 79.24 / EM: 66.20 | F1: 46.43 / EM: 41.12 |
 
+
+### 4. Postprocess
+
+## Installation
+
+## Model 학습 방법
+
+## 서버 활용 방법
+
 ## Dataset
  - [korquad1.0](https://korquad.github.io/category/1.0_KOR.html)
  - [korquad2.0](https://korquad.github.io/)
@@ -61,5 +65,3 @@ Pre-training 모델(BERT)을 활용하여 Q&A 시스템을 개발하는 것의 �
 - [huggingface transformers Github](https://github.com/huggingface/transformers)
 - [HTML Style CSS](https://webdesign.tutsplus.com/ko/tutorials/css-experiments-with-a-search-form-input-and-button--cms-22069)
 
-## Source Code Description
-- 'korquad_metrics.py', 
