@@ -17,11 +17,11 @@ Pre-training 모델(BERT)을 활용하여 Q&A 시스템을 개발하는 것의 �
 
 ### 1. Web Crawling
 - [네이버 블로그](https://section.blog.naver.com/BlogHome.nhn?directoryNo=0&currentPage=1&groupId=0), [위키피디아](https://ko.wikipedia.org/w/index.php?search=&title=%ED%8A%B9%EC%88%98:%EA%B2%80%EC%83%89&go=%EB%B3%B4%EA%B8%B0) 의 검색엔진에 질문을 넣고 상위 URL N개를 크롤링 하여 Reference Source로 활용하는 과정입니다.
-- [Crawling 정량적 평가](module_test/01_Crawler Module Test.ipynb) 방법 및 결과를 참고하시기 바랍니다.
+- ![Crawling 정량적 평가](module_test/01_Crawler Module Test.ipynb) 방법 및 결과를 참고하시기 바랍니다.
 
 ### 2. Preprocess
 - Crawling을 통해 얻은 Reference Source(HTML)는 독특한 구조적 특징을 갖고 있습니다. 이를 모델이 학습할 수 있도록 줄글로 변환하는 과정입니다.
-- [Preprocess 정량적 평가](module_test/02_Preprocess Module Test.ipynb) 방법 및 결과를 참고하시기 바랍니다.
+- ![Preprocess 정량적 평가](module_test/02_Preprocess Module Test.ipynb) 방법 및 결과를 참고하시기 바랍니다.
 
 ### 3. BERT Model
 - 총 3개 Model, 4개 Dataset에서 테스트를 진행합니다.
