@@ -21,6 +21,7 @@ Pre-training 모델(BERT)을 활용하여 Q&A 시스템을 개발하는 것의 �
 - [Crawling 정량적 평가](https://github.com/JoungheeKim/korean-question-answer-system/blob/master/module_test/02_Preprocess%20Module%20Test.ipynb) 방법 및 결과 참고
 
 ### 2. Preprocess
+![](img/system_preprocess.png)
 - Crawling을 통해 얻은 Reference Source(HTML)는 독특한 구조적 특징을 갖고 있고, 이를 모델이 학습할 수 있도록 줄글로 변환하는 과정
 - [Preprocess 정량적 평가](https://github.com/JoungheeKim/korean-question-answer-system/blob/master/module_test/02_Preprocess%20Module%20Test.ipynb) 방법 및 결과 참고
 
