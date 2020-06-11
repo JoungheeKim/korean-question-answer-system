@@ -48,6 +48,7 @@ Pre-training 모델(BERT)을 활용하여 Q&A 시스템을 개발하는 것의 �
 
 
 ### 4. Postprocess
+![](img/system_postprocess.png)
 - Model을 통해 얻은 결과물(Confidence Score, Answer Position)을 후보 텍스트로 변환하고, 후보 텍스트들을 확률이 높은 순으로 정렬하는 과정
 - [Postprocess 정량적 평가](https://github.com/JoungheeKim/korean-question-answer-system/blob/master/module_test/04_QA%20Module%20Eye%20check.ipynb) 방법 및 결과 참고
 
