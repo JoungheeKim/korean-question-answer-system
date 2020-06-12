@@ -8,7 +8,7 @@ Pre-training 모델(BERT)을 활용하여 Q&A 시스템을 개발하는 것의 �
 프로젝트와 관련된 제안, 중간, 최종 영상입니다.
 1. [제안발표 영상](https://youtu.be/JQn5JIthlAI)
 2. [중간발표 영상](https://youtu.be/fGQAx_wCm3E)
-3. [최종발표 영상](https://youtu.be/uwzPH9xOM30)
+3. [최종발표 영상](https://youtu.be/GSUhYx9uiaE)
 
 ## 시스템 설명
 ![](img/system_overview.png)
