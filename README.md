@@ -45,7 +45,7 @@ Pre-training 모델(BERT)을 활용하여 Q&A 시스템을 개발하는 것의 �
 
 ## 설치 방법
 ```python
-pip install requirements.txt
+pip install -r requirements.txt
 ```
 
 ## 모델 학습 및 평가 방법
