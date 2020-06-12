@@ -69,7 +69,14 @@ Pre-training 모델(BERT)을 활용하여 Q&A 시스템을 개발하는 것의 �
 | Bert-multilingual       | F1: 78.04 / EM: 70.69  | F1: 78.35 / EM: 71.04 | F1: 75.91 / EM: 62.37 | F1: 49.64 / EM: 43.13 |
 | Hanbert                 | F1: 84.87 / EM: 78.94  | F1: 85.62 / EM: 79.63 | F1: 79.24 / EM: 66.20 | F1: 46.43 / EM: 41.12 |
 
-## 서버 활용 방법
+## 서버 구동 방법
+웹서버를 구동하기 위하여 학습된 모델이 준비되어야 합니다.
+
+- 구동명령어(python)
+```python
+python korquad_server.py --model_name_or_path aihub_model/bert
+```
+
 
 ## Dataset
  - [korquad1.0](https://korquad.github.io/category/1.0_KOR.html)
