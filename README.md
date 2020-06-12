@@ -44,6 +44,9 @@ Pre-training 모델(BERT)을 활용하여 Q&A 시스템을 개발하는 것의 �
 
 
 ## 설치 방법
+```python
+pip install requirements.txt
+```
 
 ## 모델 학습 및 평가 방법
 [Kobert](https://github.com/monologg/KoBERT-KorQuAD), [Hanbert](https://github.com/tbai2019/HanBert-54k-N) 사용방법 및 설치 방법 참고
