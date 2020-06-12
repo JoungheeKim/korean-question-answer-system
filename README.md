@@ -12,15 +12,14 @@ Pre-training 모델(BERT)을 활용하여 Q&A 시스템을 개발하는 것의 �
 
 ## 시스템 설명
 ![](img/system_overview.png)
-- 목표 : '질문'에 대한 '대답' 을 찾는 시스템을 개발
-- 과정 : 1. Web Crawling  -->  2. Preprocess  -->  3. BERT Model  -->  4. Postprocess
+- 검색엔진(네이버, 구글 등)을 활용하여 '질문'에 대한 '대답' 을 찾는 시스템을 개발
+- 크롤링, 전처리, 언어모델, 후처리 모듈로 시스템 구성
 
 #### 1. Web Crawling
-- [네이버 블로그](https://section.blog.naver.com/BlogHome.nhn?directoryNo=0&currentPage=1&groupId=0), [위키피디아](https://ko.wikipedia.org/w/index.php?search=&title=%ED%8A%B9%EC%88%98:%EA%B2%80%EC%83%89&go=%EB%B3%B4%EA%B8%B0) 의 검색엔진에 질문을 넣고 상위 URL N개를 크롤링 하여 Reference Source로 활용하는 과정
+- [네이버 블로그](https://section.blog.naver.com/BlogHome.nhn?directoryNo=0&currentPage=1&groupId=0), [위키피디아](https://ko.wikipedia.org/w/index.php?search=&title=%ED%8A%B9%EC%88%98:%EA%B2%80%EC%83%89&go=%EB%B3%B4%EA%B8%B0) 의 검색엔진을 활용하여 질문에 대한 응답(URL)을 크롤링
 - [Crawling 정량적 평가](https://github.com/JoungheeKim/korean-question-answer-system/blob/master/module_test/02_Preprocess%20Module%20Test.ipynb) 방법 및 결과 참고
 
 ### 2. Preprocess
-![](img/system_preprocess.png)
 - Crawling을 통해 얻은 Reference Source(HTML)는 독특한 구조적 특징을 갖고 있고, 이를 모델이 학습할 수 있도록 줄글로 변환하는 과정
 - [Preprocess 정량적 평가](https://github.com/JoungheeKim/korean-question-answer-system/blob/master/module_test/02_Preprocess%20Module%20Test.ipynb) 방법 및 결과 참고
 
