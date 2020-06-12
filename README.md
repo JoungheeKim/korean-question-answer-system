@@ -37,7 +37,7 @@ Pre-training 모델(BERT)을 활용하여 Q&A 시스템을 개발하는 것의 �
 - 언어모델을 통해 얻은 결과물(정답, 정답의 신뢰점수)를 토대로 정답을 복원하는 과정
 - 언어모델로부터 추출한 정답의 신뢰점수를 이용하여 확률이 높은 순으로 정답 범위를 정렬
 - 정답 범위를 이용하여 후보문단으로부터 정답(Answer Text)를 추출
-- [Postprocess 정량적 평가](https://github.com/JoungheeKim/korean-question-answer-system/blob/master/module_test/04_QA%20Module%20Eye%20check.ipynb) 방법 및 결과 참고
+- 후처리 모듈의 [정량적 평가](https://github.com/JoungheeKim/korean-question-answer-system/blob/master/module_test/03_QA%20Module%20Test.ipynb) [정성적 평가](https://github.com/JoungheeKim/korean-question-answer-system/blob/master/module_test/04_QA%20Module%20Eye%20check.ipynb) 방법과 평가결과 참고
 
 ## 시스템 성능 평가
 
