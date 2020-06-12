@@ -19,25 +19,25 @@ Pre-training 모델(BERT)을 활용하여 Q&A 시스템을 개발하는 것의 �
 - 웹 검색엔진으로부터 원천소스(Reference Text)를 크롤링 하는 과정
 - 웹 검색엔진의 검색엔진을 활용하여 질문에 대한 검색결과(URL) 중 상위 N개 페이지(HTML)를 크롤링
 - [네이버 블로그](https://section.blog.naver.com/BlogHome.nhn?directoryNo=0&currentPage=1&groupId=0), [위키피디아](https://ko.wikipedia.org/w/index.php?search=&title=%ED%8A%B9%EC%88%98:%EA%B2%80%EC%83%89&go=%EB%B3%B4%EA%B8%B0) 두가지 검색엔진에서 크롤링
-- 크롤링 모듈의 [정량적 평가 방법과 평가결과](https://github.com/JoungheeKim/korean-question-answer-system/blob/master/module_test/02_Preprocess%20Module%20Test.ipynb) 참고
+- 크롤링 모듈의 [정량적 평가 및 결과](https://github.com/JoungheeKim/korean-question-answer-system/blob/master/module_test/02_Preprocess%20Module%20Test.ipynb) 참고
 
 #### 2. Preprocess
 - 크롤링을 통해 얻은 페이지(HTML)를 줄글로 변환하는 과정
 - 페이지의 구조적 특징 정보(TAG)를 토대로 문단을 분리하여 후보문단(Candidate Paragraph)을 생성
 - 언어모델에 페이지의 테이블 구조, 리스트 구조 등이 반영될 수 있도록 특수토큰(Special Token) 적용
-- 전처리 모듈의 [정량적 평가 방법과 평가결과](https://github.com/JoungheeKim/korean-question-answer-system/blob/master/module_test/02_Preprocess%20Module%20Test.ipynb) 참고
+- 전처리 모듈의 [정량적 평가 및 결과](https://github.com/JoungheeKim/korean-question-answer-system/blob/master/module_test/02_Preprocess%20Module%20Test.ipynb) 참고
 
 #### 3. Language Model
 - 학습된 언어모델로 후보문단(Candidate Paragraph)에서 정답을 추출하는 과정
 - 다양한 데이터셋에서 학습한 언어모델을 활용
 - 후보문단들에서 각각 정답 범위(Answer Span)와 정답의 신뢰점수(Confidence Score)를 생성
-- 언어모델 모듈의 [정량적 평가 방법과 평가결과](#언어-모델-실험-및-평가) 참고
+- 언어모델 모듈의 [정량적 평가 및 결과](#언어-모델-실험-및-평가) 참고
 
 #### 4. Postprocess
 - 언어모델을 통해 얻은 결과물(정답, 정답의 신뢰점수)를 토대로 정답을 복원하는 과정
 - 언어모델로부터 추출한 정답의 신뢰점수를 이용하여 확률이 높은 순으로 정답 범위를 정렬
 - 정답 범위를 이용하여 후보문단으로부터 정답(Answer Text)를 추출
-- 후처리 모듈의 [정량적 평가](https://github.com/JoungheeKim/korean-question-answer-system/blob/master/module_test/03_QA%20Module%20Test.ipynb) [정성적 평가](https://github.com/JoungheeKim/korean-question-answer-system/blob/master/module_test/04_QA%20Module%20Eye%20check.ipynb) 방법과 평가결과 참고
+- 후처리 모듈의 [정량적 평가 및 결과](https://github.com/JoungheeKim/korean-question-answer-system/blob/master/module_test/03_QA%20Module%20Test.ipynb), [정성적 평가 및 결과](https://github.com/JoungheeKim/korean-question-answer-system/blob/master/module_test/04_QA%20Module%20Eye%20check.ipynb)참고
 
 ## 시스템 성능 평가
 
