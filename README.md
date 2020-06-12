@@ -16,14 +16,32 @@ Pre-training 모델(BERT)을 활용하여 Q&A 시스템을 개발하는 것의 �
 - 크롤링, 전처리, 언어모델, 후처리 모듈로 시스템 구성
 
 #### 1. Web Crawling
-- [네이버 블로그](https://section.blog.naver.com/BlogHome.nhn?directoryNo=0&currentPage=1&groupId=0), [위키피디아](https://ko.wikipedia.org/w/index.php?search=&title=%ED%8A%B9%EC%88%98:%EA%B2%80%EC%83%89&go=%EB%B3%B4%EA%B8%B0) 의 검색엔진을 활용하여 질문에 대한 응답(URL)을 크롤링
-- [Crawling 정량적 평가](https://github.com/JoungheeKim/korean-question-answer-system/blob/master/module_test/02_Preprocess%20Module%20Test.ipynb) 방법 및 결과 참고
+- [네이버 블로그](https://section.blog.naver.com/BlogHome.nhn?directoryNo=0&currentPage=1&groupId=0), [위키피디아](https://ko.wikipedia.org/w/index.php?search=&title=%ED%8A%B9%EC%88%98:%EA%B2%80%EC%83%89&go=%EB%B3%B4%EA%B8%B0) 의 웹 검색엔진을 활용하여 질문에 대한 검색결과(URL) 중 상위 N개 페이지(HTML)를 크롤링하는 과정
+- 크롤링 모듈의 [정량적 평가 방법과 평가결과](https://github.com/JoungheeKim/korean-question-answer-system/blob/master/module_test/02_Preprocess%20Module%20Test.ipynb) 참고
 
-### 2. Preprocess
-- Crawling을 통해 얻은 Reference Source(HTML)는 독특한 구조적 특징을 갖고 있고, 이를 모델이 학습할 수 있도록 줄글로 변환하는 과정
-- [Preprocess 정량적 평가](https://github.com/JoungheeKim/korean-question-answer-system/blob/master/module_test/02_Preprocess%20Module%20Test.ipynb) 방법 및 결과 참고
+#### 2. Preprocess
+- 크롤링을 통해 얻은 페이지(HTML)를 줄글로 변환하는 과정
+- 페이지의 구조적 특징 정보(TAG)를 토대로 문단을 분리하여 후보문단(candidate paragraph)을 생성
+- 언어모델에 페이지의 테이블 구조, 리스트 구조 등이 반영될 수 있도록 특수토큰(special token) 적용
+- 전처리 모듈의 [정량적 평가 방법과 평가결과](https://github.com/JoungheeKim/korean-question-answer-system/blob/master/module_test/02_Preprocess%20Module%20Test.ipynb) 참고
 
-### 3. BERT Model
+#### 3. Language Model
+- 학습된 언어모델로 후보문단(candidate paragraph)에서 정답을 추출하는 과정
+- 다양한 데이터셋에서 학습한 언어모델을 활용
+- 후보문단들에서 각각 정답(span)과 정답의 신뢰점수(confidence score)를 생성
+- 언어모델 모듈의 [정량적 평가 방법과 평가결과](## 언어 모델 실험 및 평가) 참고
+
+#### 4. Postprocess
+![](img/system_postprocess.png)
+- Model을 통해 얻은 결과물(Confidence Score, Answer Position)을 후보 텍스트로 변환하고, 후보 텍스트들을 확률이 높은 순으로 정렬하는 과정
+- [Postprocess 정량적 평가](https://github.com/JoungheeKim/korean-question-answer-system/blob/master/module_test/04_QA%20Module%20Eye%20check.ipynb) 방법 및 결과 참고
+
+
+## 설치 방법
+
+## 모델 학습 방법
+
+## 언어 모델 실험 및 평가
 - 총 3개 Model, 4개 Dataset에서 테스트를 진행
 - Hyper-parameter를 고정하고 모델과 데이터를 변경하며 테스트를 진행
 - 평가지표 (EM/F1)
@@ -44,17 +62,6 @@ Pre-training 모델(BERT)을 활용하여 Q&A 시스템을 개발하는 것의 �
 | KoBERT                  | F1: 54.31 / EM: 45.30  | F1: 63.51 / EM: 53.42 | F1: 58.78 / EM: 42.48 | F1: 25.35 / EM: 20.65 |
 | Bert-multilingual       | F1: 78.04 / EM: 70.69  | F1: 78.35 / EM: 71.04 | F1: 75.91 / EM: 62.37 | F1: 49.64 / EM: 43.13 |
 | Hanbert                 | F1: 84.87 / EM: 78.94  | F1: 85.62 / EM: 79.63 | F1: 79.24 / EM: 66.20 | F1: 46.43 / EM: 41.12 |
-
-
-### 4. Postprocess
-![](img/system_postprocess.png)
-- Model을 통해 얻은 결과물(Confidence Score, Answer Position)을 후보 텍스트로 변환하고, 후보 텍스트들을 확률이 높은 순으로 정렬하는 과정
-- [Postprocess 정량적 평가](https://github.com/JoungheeKim/korean-question-answer-system/blob/master/module_test/04_QA%20Module%20Eye%20check.ipynb) 방법 및 결과 참고
-
-
-## 설치 방법
-
-## 모델 학습 방법
 
 ## 서버 활용 방법
 
