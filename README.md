@@ -40,7 +40,7 @@ Pre-training 모델(BERT)을 활용하여 Q&A 시스템을 개발하는 것의 �
 - 후처리 모듈의 [정량적 평가 및 결과](https://github.com/JoungheeKim/korean-question-answer-system/blob/master/module_test/03_QA%20Module%20Test.ipynb), [정성적 평가 및 결과](https://github.com/JoungheeKim/korean-question-answer-system/blob/master/module_test/04_QA%20Module%20Eye%20check.ipynb) 참고
 
 ## 시스템 성능 평가
-
+![](img/system_evaluation.png)
 
 
 ## 설치 방법
