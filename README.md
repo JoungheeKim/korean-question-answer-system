@@ -72,10 +72,11 @@ Pre-training 모델(BERT)을 활용하여 Q&A 시스템을 개발하는 것의 �
 ## 서버 구동 방법
 웹서버를 구동하기 위하여 학습된 모델이 준비되어야 합니다.
 ```python
-python korquad_server.py --model_name_or_path aihub_model/bert
+python korquad_server.py --model_name_or_path aihub_model/bert --device gpu
 ```
-- model_name_or_path : 학습한 모델이 있는 폴더
-- device : 모델 구동 환경(GPU/CPU)  |  Default:GPU
+- Options
+  - model_name_or_path : 학습한 모델이 있는 폴더
+  - device : 모델 구동 환경(GPU/CPU)  |  Default:GPU
 
 
 ## Dataset
