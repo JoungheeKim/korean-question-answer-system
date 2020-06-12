@@ -45,8 +45,27 @@ Pre-training 모델(BERT)을 활용하여 Q&A 시스템을 개발하는 것의 �
 
 ## 설치 방법
 
-## 모델 학습 방법
+## 모델 학습 및 평가 방법
+[Kobert](https://github.com/monologg/KoBERT-KorQuAD), [Hanbert](https://github.com/tbai2019/HanBert-54k-N) 사용방법 및 설치 방법 참고
+1. 학습 명령어
+```python
+python run_korquad.py --model_type hanbert --model_name_or_path HanBert-54kN-torch --output_dir result/ --do_train --train_dir resource/korquad2/train/ --gradient_accumulation_steps 4 --max_seq_length 512 --logging_steps 5000 --save_steps 5000 --num_train_epochs 1 --dataset_type korquad2 --version_2_with_negative
+```
+2. 평가 명령어
+```python
+python run_korquad.py --model_type hanbert --model_name_or_path aihub/ --output_dir result/ --do_eval --predict_dir resource/korquad2/dev/ --max_seq_length 512 --dataset_type korquad2 --version_2_with_negative
+```
 
+- options
+  * model_type : 모델타입(bert, kobert, hanbert) 선택 
+  * model_name_or_path : 모델타입에 따라 선택(bert : bert-base-multilingual-cased, kobert : monologg/kobert, habert : HanBert-54kN-torch)하거나 모델이 있는 폴더 설정
+  * output_dir : 학습 또는 평가 결과를 저장할 폴더
+  * do_train : 학습 할 때 설정하는 옵션(true/false)
+  * train_dir : 학습에 필요한 파일(.json)이 있는 폴더
+  * do_eval : 평가 할 때 설정하는 옵션(true/false)
+  * predict_dir : 평가에 필요한 파일(.json)이 있는 폴더
+  * dataset_type : korquad1.0 또는 aibhub 데이터(.json)을 학습할 때는 korquad1, korquad2.0 을 학습할 때는 korquad2로 설정
+  
 ## 언어 모델 실험 및 평가
 - 총 3개 Model, 4개 Dataset에서 테스트를 진행
 - Hyper-parameter를 고정하고 모델과 데이터를 변경하며 테스트를 진행
@@ -74,9 +93,9 @@ Pre-training 모델(BERT)을 활용하여 Q&A 시스템을 개발하는 것의 �
 ```python
 python korquad_server.py --model_name_or_path aihub_model/bert --device gpu
 ```
-- Options
+- options
   - model_name_or_path : 학습한 모델이 있는 폴더
-  - device : 모델 구동 환경(GPU/CPU)  |  Default:GPU
+  - device : 모델 구동 환경(GPU/CPU)  |  default:gpu
 
 
 ## Dataset
