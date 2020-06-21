@@ -91,7 +91,7 @@ python run_korquad.py --model_type hanbert --model_name_or_path aihub/ --output_
 | Bert-multilingual       | F1: 78.04 / EM: 70.69  | F1: 78.35 / EM: 71.04 | F1: 75.91 / EM: 62.37 | F1: 49.64 / EM: 43.13 |
 | Hanbert                 | F1: 84.87 / EM: 78.94  | F1: 85.62 / EM: 79.63 | F1: 79.24 / EM: 66.20 | F1: 46.43 / EM: 41.12 |
 
-※ 표에 보이는 F1, EM score는 Korquad1.0, Korquad2.0에서 공식적으로 제공하는 [평가 산출 방식](https://korquad.github.io/)이 다릅니다.
+※ 표에 보이는 F1, EM score는 Korquad1.0, Korquad2.0에서 제공하는 [공식적인 evaluation script](https://korquad.github.io/)과 평가 산출 방식이 다릅니다.
 
 ## 서버 구동 방법
 웹서버를 구동하기 위하여 학습된 모델이 준비되어야 합니다.
