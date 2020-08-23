@@ -3,7 +3,7 @@ mxnet==1.5.0
 transformers==2.8.0
 numpy==1.15.0
 gluonnlp==0.9.1
-requests==2.18.4
+requests==2.20.0
 torch==1.4.0
 apex==0.9.10dev
 beautifulsoup4==4.9.0
